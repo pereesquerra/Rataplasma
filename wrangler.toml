@@ -1,0 +1,8 @@
+name = "rataplasma"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "dist"
+
+# Vars es configuren al dashboard de Cloudflare Pages,
+# no es posen aquí per evitar commits de secrets.
+# Cal afegir a Pages > Settings > Environment variables:
+#   ANTHROPIC_API_KEY (production, encrypted)
