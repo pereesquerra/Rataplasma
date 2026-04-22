@@ -24,6 +24,16 @@ export default function Parla() {
   // Precarrega veus del navegador (iOS les carrega asíncron)
   useEffect(() => { preloadVoices() }, [])
 
+  // Bloqueja el scroll del body mentre som al xat (Safari iOS no pot moure la pàgina)
+  useEffect(() => {
+    document.documentElement.classList.add('chat-lock')
+    document.body.classList.add('chat-lock')
+    return () => {
+      document.documentElement.classList.remove('chat-lock')
+      document.body.classList.remove('chat-lock')
+    }
+  }, [])
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
   }, [missatges, pensant])

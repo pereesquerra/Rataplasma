@@ -17,6 +17,22 @@
     background-attachment: fixed;
   }
 
+  /* Chat view: lock body scroll so Safari doesn't move the whole page */
+  html.chat-lock,
+  body.chat-lock {
+    overflow: hidden !important;
+    position: fixed !important;
+    width: 100%;
+    height: 100%;
+    overscroll-behavior: none;
+    touch-action: none;
+  }
+
+  /* Prevent iOS auto-zoom on focus: inputs need >= 16px */
+  input, textarea, select {
+    font-size: 16px;
+  }
+
   body::before {
     content: '';
     position: fixed;
