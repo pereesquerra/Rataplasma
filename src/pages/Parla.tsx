@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import Mascot from '@/components/Mascot'
 import { enviarMissatgeAlXat, ChatMessage } from '@/lib/api'
 import { getUser } from '@/lib/auth'
+import { speakAsRata, stopSpeaking, preloadVoices } from '@/lib/tts'
 
 export default function Parla() {
   const user = getUser()!
@@ -16,11 +17,42 @@ export default function Parla() {
   const [input, setInput] = useState('')
   const [pensant, setPensant] = useState(false)
   const [error, setError] = useState('')
+  const [veuActiva, setVeuActiva] = useState(true)
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Precarrega veus del navegador (iOS les carrega asíncron)
+  useEffect(() => { preloadVoices() }, [])
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
   }, [missatges, pensant])
+
+  // Atura la veu si el user surt
+  useEffect(() => {
+    return () => { stopSpeaking() }
+  }, [])
+
+  // Cada vegada que arriba un missatge nou de la Rata, el llegeix
+  useEffect(() => {
+    if (!veuActiva) return
+    const darrer = missatges[missatges.length - 1]
+    if (darrer && darrer.role === 'assistant') {
+      // Neteja emojis i asteriscs perquè el TTS no els llegeixi
+      const net = darrer.content
+        .replace(/[\p{Emoji}\u200d\ufe0f]/gu, '')
+        .replace(/[*_`~#]/g, '')
+        .trim()
+      if (net) speakAsRata(net)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [missatges.length])
+
+  function toggleVeu() {
+    setVeuActiva(v => {
+      if (v) stopSpeaking()
+      return !v
+    })
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -62,6 +94,14 @@ export default function Parla() {
             <div className="font-pixel text-phantom text-sm tracking-wider">LA RATA</div>
             <div className="font-terminal text-bone/60 text-xs">en línia · fantasma</div>
           </div>
+          <button
+            onClick={toggleVeu}
+            className="ml-2 p-2 rounded-full border border-phantom/30 hover:border-phantom transition-colors font-terminal text-xl leading-none"
+            title={veuActiva ? 'Silencia la veu de la Rata' : 'Activa la veu de la Rata'}
+            aria-label={veuActiva ? 'Silencia la veu' : 'Activa la veu'}
+          >
+            {veuActiva ? '🔊' : '🔇'}
+          </button>
         </div>
       </header>
 

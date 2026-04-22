@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useRef, useState, type CSSProperties } from 'react'
 
 type Shape = 'postit' | 'bubble' | 'caution' | 'torn' | 'badge'
 
@@ -36,29 +36,44 @@ const SURPRISE_PHRASES = [
 interface Bubble { id: number; phrase: string; x: number; y: number; rot: number }
 interface Burst { id: string; x: number; y: number; dx: number; dy: number; rot: number; color: string; size: number }
 
-// Query param per al squeak
-function getVeuUrl(): string {
-  if (typeof window === 'undefined') return '/rataplasma.m4a'
-  const params = new URLSearchParams(window.location.search)
-  const veu = params.get('veu')
-  if (veu === 'grandpa') return '/crit-grandpa.m4a'
-  if (veu === 'eddy') return '/crit-eddy.m4a'
-  if (veu === 'montse') return '/crit-montse.m4a'
-  return '/rataplasma.m4a'
-}
-
 export default function Stickers() {
   const [bubbles, setBubbles] = useState<Bubble[]>([])
   const [bursts, setBursts] = useState<Burst[]>([])
   const [triggered, setTriggered] = useState<Record<number, number>>({})
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const audioCtxRef = useRef<AudioContext | null>(null)
 
-  useEffect(() => {
-    const a = new Audio(getVeuUrl())
-    a.volume = 0.35
-    a.playbackRate = 1.4
-    audioRef.current = a
-  }, [])
+  // Pip-pip curt i divertit fet amb Web Audio — un "xiulet" de rata
+  function pipPip() {
+    try {
+      if (!audioCtxRef.current) {
+        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+        audioCtxRef.current = new AudioCtx()
+      }
+      const ctx = audioCtxRef.current
+      if (ctx.state === 'suspended') ctx.resume()
+      const now = ctx.currentTime
+
+      // 2 pips curts: 80ms cada un amb un petit bend de freqüència
+      const playPip = (startTime: number, baseFreq: number) => {
+        const osc = ctx.createOscillator()
+        osc.type = 'sine'
+        osc.frequency.setValueAtTime(baseFreq, startTime)
+        osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.4, startTime + 0.04)
+        osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.9, startTime + 0.08)
+        const gain = ctx.createGain()
+        gain.gain.setValueAtTime(0, startTime)
+        gain.gain.linearRampToValueAtTime(0.22, startTime + 0.005)
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.08)
+        osc.connect(gain)
+        gain.connect(ctx.destination)
+        osc.start(startTime)
+        osc.stop(startTime + 0.1)
+      }
+
+      playPip(now, 1200 + Math.random() * 400)
+      playPip(now + 0.11, 1400 + Math.random() * 500)
+    } catch { /* ignore */ }
+  }
 
   const pop = (idx: number, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation()
@@ -67,15 +82,8 @@ export default function Stickers() {
     const cx = rect.left + rect.width / 2
     const cy = rect.top + rect.height / 2
 
-    // squeak curt
-    const a = audioRef.current
-    if (a) {
-      try {
-        a.currentTime = 0
-        a.play().catch(() => {})
-        setTimeout(() => { try { a.pause() } catch { /* ignore */ } }, 350)
-      } catch { /* ignore */ }
-    }
+    // pip-pip curt (Web Audio, no fitxer)
+    pipPip()
 
     // sticker anim
     setTriggered(t => ({ ...t, [idx]: Date.now() }))
