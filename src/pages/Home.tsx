@@ -50,9 +50,9 @@ export default function Home() {
     setScreaming(true)
     const id = Date.now()
     setShockwaves(prev => [...prev, { id, variant: 0 }, { id: id + 1, variant: 1 }, { id: id + 2, variant: 2 }])
-    // Durada sincronitzada amb el crit del Pau (2s aprox)
-    setTimeout(() => setShake(false), 1800)
-    setTimeout(() => setScreaming(false), 2000)
+    // Durada sincronitzada amb el crit del Pau (4s)
+    setTimeout(() => setShake(false), 3700)
+    setTimeout(() => setScreaming(false), 3900)
     setTimeout(() => setLeaping(false), 900)
     setTimeout(() => setShockwaves(prev => prev.filter(s => s.id < id || s.id > id + 2)), 1200)
   }

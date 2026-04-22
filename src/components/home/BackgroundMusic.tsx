@@ -33,7 +33,7 @@ export default function BackgroundMusic() {
       if (!a) return
       const original = 0.35
       a.volume = 0.08
-      setTimeout(() => { if (audioRef.current) audioRef.current.volume = original }, 2000)
+      setTimeout(() => { if (audioRef.current) audioRef.current.volume = original }, 4000)
     }
     window.addEventListener('rataplasma:scream-start', onScream)
     return () => window.removeEventListener('rataplasma:scream-start', onScream)

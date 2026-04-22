@@ -70,28 +70,20 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
 
   function tocarCrit() {
     const a = audioRef.current
-    if (!a) {
-      console.warn('[MegaButton] Audio encara no s\'ha creat')
-      return
-    }
+    if (!a) return
     try {
       a.currentTime = 0
       const p = a.play()
       if (p !== undefined) {
-        p.then(() => {
-          console.log('[MegaButton] crit sonant OK')
-        }).catch((err) => {
-          console.error('[MegaButton] play() ha fallat:', err)
-          // Fallback: prova un Audio nou creat en el moment del clic
+        p.catch(() => {
+          // Fallback: Audio nou creat al clic (desbloqueja autoplay policy)
           const fresh = new Audio(getVeuUrl())
           fresh.volume = 1.0
-          fresh.play().catch(e => console.error('[MegaButton] fallback també falla:', e))
+          fresh.play().catch(() => {})
         })
       }
       window.dispatchEvent(new CustomEvent('rataplasma:scream-start'))
-    } catch (err) {
-      console.error('[MegaButton] excepció a tocarCrit:', err)
-    }
+    } catch { /* ignore */ }
   }
 
   const spawnLetterWave = () => {
