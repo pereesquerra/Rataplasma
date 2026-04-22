@@ -40,15 +40,15 @@ interface Confetti {
 const BUTTON_LABEL = 'RATAPLASMAAAA'
 const LETTER_COLORS = ['#4dff9f', '#a47bff', '#ff9f6b', '#ff6fa8', '#ffdc5e', '#5fc8ff']
 
-// Query param ?veu=pau|grandpa|eddy|montse (default: pau v3)
+// Query param ?veu=pau|grandpa|eddy|montse (default: pau v4)
 function getVeuUrl(): string {
-  if (typeof window === 'undefined') return '/crit-pau-v3.mp3'
+  if (typeof window === 'undefined') return '/crit-pau-v4.mp3'
   const params = new URLSearchParams(window.location.search)
   const veu = params.get('veu')
   if (veu === 'grandpa') return '/crit-grandpa.m4a'
   if (veu === 'eddy') return '/crit-eddy.m4a'
   if (veu === 'montse') return '/crit-montse.m4a'
-  return '/crit-pau-v3.mp3'
+  return '/crit-pau-v4.mp3'
 }
 
 export default function MegaButton({ onPress }: MegaButtonProps) {
@@ -63,7 +63,7 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
   function tocarCrit() {
     try {
       // Un Audio nou cada vegada — així sempre agafa l'última versió i evita estats pausats
-      const a = new Audio(getVeuUrl() + '?v=3')
+      const a = new Audio(getVeuUrl() + '?v=4')
       a.volume = 1.0
       a.play().catch((err) => console.warn('[MegaButton] play falla:', err))
       audioRef.current = a

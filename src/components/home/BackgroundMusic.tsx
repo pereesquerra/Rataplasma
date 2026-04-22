@@ -26,14 +26,24 @@ export default function BackgroundMusic() {
     return () => { a.removeEventListener('ended', onEnded) }
   }, [idx, playing])
 
-  // Ducking: quan es clica el botó del crit, baixo la música 2s perquè el crit mani
+  // Ducking: baixa la música mentre crida, puja progressivament al final
   useEffect(() => {
     const onScream = () => {
       const a = audioRef.current
       if (!a) return
       const original = 0.35
       a.volume = 0.08
-      setTimeout(() => { if (audioRef.current) audioRef.current.volume = original }, 6500)
+      // A partir del segon 5.3 (quan arrenca el fade-out del crit), pujo la música progressivament
+      const fadeBackSteps = 20
+      const fadeBackStart = 5300
+      const fadeBackDuration = 1500
+      for (let i = 0; i <= fadeBackSteps; i++) {
+        const t = fadeBackStart + (fadeBackDuration / fadeBackSteps) * i
+        const vol = 0.08 + (original - 0.08) * (i / fadeBackSteps)
+        setTimeout(() => {
+          if (audioRef.current) audioRef.current.volume = vol
+        }, t)
+      }
     }
     window.addEventListener('rataplasma:scream-start', onScream)
     return () => window.removeEventListener('rataplasma:scream-start', onScream)
