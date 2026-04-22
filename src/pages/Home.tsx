@@ -5,6 +5,7 @@ import MascotV4 from '@/components/home/MascotV4'
 import MegaButton from '@/components/home/MegaButton'
 import NavCards from '@/components/home/NavCards'
 import Stickers from '@/components/home/Stickers'
+import BackgroundMusic from '@/components/home/BackgroundMusic'
 import { getUser, logout } from '@/lib/auth'
 import '@/styles/home.css'
 
@@ -49,13 +50,9 @@ export default function Home() {
     setScreaming(true)
     const id = Date.now()
     setShockwaves(prev => [...prev, { id, variant: 0 }, { id: id + 1, variant: 1 }, { id: id + 2, variant: 2 }])
-    setTimeout(() => {
-      const id2 = Date.now()
-      setShockwaves(prev => [...prev, { id: id2, variant: 0 }, { id: id2 + 1, variant: 2 }])
-      setTimeout(() => setShockwaves(prev => prev.filter(s => s.id !== id2 && s.id !== id2 + 1)), 1200)
-    }, 1800)
-    setTimeout(() => setShake(false), 4200)
-    setTimeout(() => setScreaming(false), 4500)
+    // Durada sincronitzada amb el crit del Pau (2s aprox)
+    setTimeout(() => setShake(false), 1800)
+    setTimeout(() => setScreaming(false), 2000)
     setTimeout(() => setLeaping(false), 900)
     setTimeout(() => setShockwaves(prev => prev.filter(s => s.id < id || s.id > id + 2)), 1200)
   }
@@ -118,6 +115,7 @@ export default function Home() {
       </div>
 
       <Stickers />
+      <BackgroundMusic />
     </div>
   )
 }

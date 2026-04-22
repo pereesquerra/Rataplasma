@@ -40,15 +40,15 @@ interface Confetti {
 const BUTTON_LABEL = 'RATAPLASMAAA!'
 const LETTER_COLORS = ['#4dff9f', '#a47bff', '#ff9f6b', '#ff6fa8', '#ffdc5e', '#5fc8ff']
 
-// Query param ?veu=grandpa|eddy|montse
+// Query param ?veu=pau|grandpa|eddy|montse (default: pau)
 function getVeuUrl(): string {
-  if (typeof window === 'undefined') return '/rataplasma.m4a'
+  if (typeof window === 'undefined') return '/crit-pau.mp3'
   const params = new URLSearchParams(window.location.search)
   const veu = params.get('veu')
   if (veu === 'grandpa') return '/crit-grandpa.m4a'
   if (veu === 'eddy') return '/crit-eddy.m4a'
   if (veu === 'montse') return '/crit-montse.m4a'
-  return '/rataplasma.m4a'
+  return '/crit-pau.mp3'
 }
 
 export default function MegaButton({ onPress }: MegaButtonProps) {
@@ -57,130 +57,23 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
   const [trails, setTrails] = useState<Trail[]>([])
   const [confetti, setConfetti] = useState<Confetti[]>([])
   const btnRef = useRef<HTMLButtonElement | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
-  // Web Audio pipeline — conservant el de BotoRataplasma original
-  const audioCtxRef = useRef<AudioContext | null>(null)
-  const bufferRef = useRef<AudioBuffer | null>(null)
-  const reverbBufferRef = useRef<AudioBuffer | null>(null)
-
+  // Precarrega el clip com a HTMLAudioElement senzill — sense Web Audio, sense efectes sintètics
   useEffect(() => {
-    let cancelled = false
-    async function load() {
-      try {
-        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
-        const ctx = new AudioCtx()
-        audioCtxRef.current = ctx
-
-        const res = await fetch(getVeuUrl())
-        const arr = await res.arrayBuffer()
-        if (cancelled) return
-        bufferRef.current = await ctx.decodeAudioData(arr)
-
-        // Reverb impulse
-        const impulseLen = ctx.sampleRate * 1.2
-        const impulse = ctx.createBuffer(2, impulseLen, ctx.sampleRate)
-        for (let ch = 0; ch < 2; ch++) {
-          const data = impulse.getChannelData(ch)
-          for (let i = 0; i < impulseLen; i++) {
-            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / impulseLen, 2.5)
-          }
-        }
-        reverbBufferRef.current = impulse
-      } catch (err) {
-        console.error('Error carregant àudio:', err)
-      }
-    }
-    load()
-    return () => { cancelled = true }
+    const a = new Audio(getVeuUrl())
+    a.preload = 'auto'
+    a.volume = 1.0
+    audioRef.current = a
   }, [])
 
   function tocarCrit() {
-    const ctx = audioCtxRef.current
-    const buffer = bufferRef.current
-    const impulse = reverbBufferRef.current
-    if (!ctx || !buffer) return
-    if (ctx.state === 'suspended') ctx.resume()
-
-    const now = ctx.currentTime
-
-    const source = ctx.createBufferSource()
-    source.buffer = buffer
-
-    const master = ctx.createGain()
-    master.gain.value = 1.6
-    master.connect(ctx.destination)
-
-    // ======== BOOM sub-bass de baix — "shockwave sonora" ========
-    const boom = ctx.createOscillator()
-    boom.type = 'sine'
-    boom.frequency.setValueAtTime(140, now)
-    boom.frequency.exponentialRampToValueAtTime(30, now + 0.7)
-    const boomGain = ctx.createGain()
-    boomGain.gain.setValueAtTime(0, now)
-    boomGain.gain.linearRampToValueAtTime(1.3, now + 0.02)
-    boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.9)
-    boom.connect(boomGain)
-    boomGain.connect(master)
-    boom.start(now)
-    boom.stop(now + 1.0)
-
-    // ======== THUMP — white noise burst filtrat, impacte inicial ========
-    const noiseDur = 0.18
-    const noiseBuf = ctx.createBuffer(1, ctx.sampleRate * noiseDur, ctx.sampleRate)
-    const nd = noiseBuf.getChannelData(0)
-    for (let i = 0; i < nd.length; i++) {
-      nd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / nd.length, 2)
-    }
-    const noiseSrc = ctx.createBufferSource()
-    noiseSrc.buffer = noiseBuf
-    const noiseLP = ctx.createBiquadFilter()
-    noiseLP.type = 'lowpass'
-    noiseLP.frequency.value = 450
-    noiseLP.Q.value = 0.8
-    const noiseGain = ctx.createGain()
-    noiseGain.gain.value = 0.75
-    noiseSrc.connect(noiseLP)
-    noiseLP.connect(noiseGain)
-    noiseGain.connect(master)
-    noiseSrc.start(now)
-
-    // ======== CRIT principal amb distorsió lleu + reverb ========
-    const dryGain = ctx.createGain()
-    dryGain.gain.value = 0.95
-    dryGain.connect(master)
-
-    const wetGain = ctx.createGain()
-    wetGain.gain.value = 0.5
-    wetGain.connect(master)
-
-    if (impulse) {
-      const convolver = ctx.createConvolver()
-      convolver.buffer = impulse
-      source.connect(convolver)
-      convolver.connect(wetGain)
-    }
-
-    // Distorsió lleu (tanh) per fer el crit més agressiu
-    const shaper = ctx.createWaveShaper()
-    const curve = new Float32Array(1024)
-    for (let i = 0; i < 1024; i++) {
-      const x = (i - 512) / 512
-      curve[i] = Math.tanh(x * 2.5)
-    }
-    shaper.curve = curve
-    shaper.oversample = '2x'
-
-    const filter = ctx.createBiquadFilter()
-    filter.type = 'peaking'
-    filter.frequency.value = 1800
-    filter.gain.value = 4
-    filter.Q.value = 1
-
-    source.connect(filter)
-    filter.connect(shaper)
-    shaper.connect(dryGain)
-
-    source.start(now)
+    const a = audioRef.current
+    if (!a) return
+    try {
+      a.currentTime = 0
+      a.play().catch(() => {})
+    } catch { /* ignore */ }
   }
 
   const spawnLetterWave = () => {
@@ -199,25 +92,17 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
       const color = LETTER_COLORS[(i + Math.floor(Math.random() * 3)) % LETTER_COLORS.length]
       const uid = Date.now() + '-' + i + '-' + Math.random()
       newLetters.push({
-        id: uid,
-        char: span.textContent || '',
-        color,
-        startX: sx,
-        startY: sy,
-        dx,
-        dy,
+        id: uid, char: span.textContent || '', color,
+        startX: sx, startY: sy, dx, dy,
         rotate: (Math.random() - 0.5) * 900,
       })
       for (let t = 0; t < 8; t++) {
         newTrails.push({
           id: uid + '-t-' + t,
-          x: sx,
-          y: sy,
+          x: sx, y: sy,
           dx: dx * (0.2 + t * 0.1),
           dy: dy * (0.2 + t * 0.1) + t * 20,
-          color,
-          size: 10 + Math.random() * 8,
-          delay: t * 25,
+          color, size: 10 + Math.random() * 8, delay: t * 25,
         })
       }
     })
@@ -233,8 +118,7 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
       const power = 200 + Math.random() * 650
       return {
         id: Date.now() + '-c-' + i + '-' + Math.random(),
-        x: cx,
-        y: cy,
+        x: cx, y: cy,
         dx: Math.cos(angle) * power,
         dy: Math.sin(angle) * power - 350,
         rotate: Math.random() * 900,
@@ -258,13 +142,11 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
     setTimeout(() => setPressing(false), 260)
     onPress?.()
 
-    const waveCount = 6
-    for (let w = 0; w < waveCount; w++) {
-      setTimeout(() => spawnLetterWave(), w * 650)
-    }
+    // Només 2 onades curtes, el crit dura 2s
+    spawnLetterWave()
+    setTimeout(spawnLetterWave, 600)
 
-    spawnConfetti(cx, cy, 70)
-    setTimeout(() => spawnConfetti(cx, cy, 40), 2000)
+    spawnConfetti(cx, cy, 60)
   }
 
   return (
@@ -311,10 +193,7 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
           key={t.id}
           className="flying-letter-trail"
           style={{
-            left: t.x,
-            top: t.y,
-            width: t.size,
-            height: t.size,
+            left: t.x, top: t.y, width: t.size, height: t.size,
             background: t.color,
             boxShadow: `0 0 ${t.size * 2}px ${t.color}`,
             transform: 'translate(-50%, -50%)',
@@ -330,9 +209,7 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
           key={l.id}
           className="flying-letter"
           style={{
-            left: l.startX,
-            top: l.startY,
-            color: l.color,
+            left: l.startX, top: l.startY, color: l.color,
             transform: 'translate(-50%, -50%)',
             animation: 'letterFly 1.7s cubic-bezier(0.2, 0.8, 0.4, 1) forwards',
             ['--dx' as string]: `${l.dx}px`,
@@ -349,10 +226,7 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
           key={c.id}
           className="confetti"
           style={{
-            left: c.x,
-            top: c.y,
-            width: c.size,
-            height: c.size * 1.4,
+            left: c.x, top: c.y, width: c.size, height: c.size * 1.4,
             background: c.color,
             transform: 'translate(-50%, -50%)',
             animation: 'confettiBurst 2.2s cubic-bezier(0.2, 0.8, 0.4, 1) forwards',
