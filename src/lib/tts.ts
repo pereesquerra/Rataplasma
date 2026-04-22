@@ -1,5 +1,5 @@
-// Text-to-Speech per la Rata Fantasma — fa servir Web Speech API (gratis, a tot el navegador)
-// Veu configurada perquè soni a rata/nen: pitch alt, velocitat ràpida, veu català o castellà femenina petita
+// Text-to-Speech per la Rata Fantasma — Web Speech API
+// Veu: català prioritari, pitch alt, velocitat ràpida — rata/nen
 
 let cachedVoice: SpeechSynthesisVoice | null = null
 let voiceLoadAttempted = false
@@ -9,22 +9,19 @@ function pickVoice(): SpeechSynthesisVoice | null {
   const voices = window.speechSynthesis.getVoices()
   if (voices.length === 0) return null
 
-  // Prioritat: català > castellà > qualsevol de nen/infantil
-  // iOS i macOS tenen veus com 'Mónica', 'Paulina', 'Jorge' (es-ES), 'Montserrat' (ca-ES)
-  const byLang = (prefix: string) =>
-    voices.find(v => v.lang.toLowerCase().startsWith(prefix))
+  // 1. Qualsevol veu en català (ca-ES, ca-AD, etc.)
+  const catala = voices.find(v => v.lang.toLowerCase().startsWith('ca'))
+  if (catala) { cachedVoice = catala; return catala }
 
-  const candidate =
-    byLang('ca') ||
-    voices.find(v => /Montserrat|Mónica|Monica|Paulina/i.test(v.name)) ||
-    byLang('es') ||
-    voices[0]
+  // 2. Veus en espanyol que sonen bé (macOS/iOS)
+  const castella = voices.find(v => /Montserrat|Mónica|Monica|Paulina/i.test(v.name))
+    || voices.find(v => v.lang.toLowerCase().startsWith('es'))
+  if (castella) { cachedVoice = castella; return castella }
 
-  cachedVoice = candidate || null
+  cachedVoice = voices[0]
   return cachedVoice
 }
 
-// El navegador carrega les veus de forma asíncrona; cal esperar l'esdeveniment
 export function preloadVoices(): void {
   if (voiceLoadAttempted) return
   voiceLoadAttempted = true
@@ -36,12 +33,36 @@ export function preloadVoices(): void {
   }
 }
 
+// Neteja del text perquè el TTS no llegeixi símbols, emojis, URLs, codi…
+function cleanForSpeech(text: string): string {
+  return text
+    // treu blocs de codi ``` …  ```
+    .replace(/```[\s\S]*?```/g, ' ')
+    // treu codi inline `…`
+    .replace(/`[^`]*`/g, ' ')
+    // treu URLs
+    .replace(/https?:\/\/\S+/g, ' ')
+    // treu tags HTML
+    .replace(/<[^>]+>/g, ' ')
+    // treu emojis
+    .replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '')
+    // treu markdown d'èmfasi i símbols estranys
+    .replace(/[*_~#>|\[\]{}<>^]/g, '')
+    // treu rep. de puntuació ("!!!" → "!")
+    .replace(/([!?¡¿.]){2,}/g, '$1')
+    // normalitza espais/tabs/salts
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
 export function speakAsRata(text: string): void {
   if (!('speechSynthesis' in window)) return
-  // Atura si hi ha alguna cosa parlant (no acumular)
+  const net = cleanForSpeech(text)
+  if (!net) return
+
   window.speechSynthesis.cancel()
 
-  const utter = new SpeechSynthesisUtterance(text)
+  const utter = new SpeechSynthesisUtterance(net)
   const voice = pickVoice()
   if (voice) {
     utter.voice = voice
@@ -49,7 +70,6 @@ export function speakAsRata(text: string): void {
   } else {
     utter.lang = 'ca-ES'
   }
-  // Veu de rata: pitch alt i velocitat ràpida
   utter.pitch = 1.6
   utter.rate = 1.15
   utter.volume = 1.0
@@ -59,3 +79,4 @@ export function speakAsRata(text: string): void {
 export function stopSpeaking(): void {
   if ('speechSynthesis' in window) window.speechSynthesis.cancel()
 }
+

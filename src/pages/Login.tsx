@@ -59,9 +59,13 @@ export default function Login() {
 
           <form onSubmit={mode === 'login' ? handleLogin : handleRequest} className="space-y-4">
             <div>
-              <label className="terminal-label block mb-1">el teu nom</label>
+              <label className="terminal-label block mb-1" htmlFor="rata-nom">el teu nom</label>
               <input
+                id="rata-nom"
+                name="username"
                 type="text"
+                autoComplete="username"
+                autoCapitalize="words"
                 value={nom}
                 onChange={e => setNom(e.target.value)}
                 maxLength={20}
@@ -73,9 +77,13 @@ export default function Login() {
 
             {mode === 'login' && (
               <div>
-                <label className="terminal-label block mb-1">codi secret</label>
+                <label className="terminal-label block mb-1" htmlFor="rata-codi">codi secret</label>
                 <input
-                  type="text"
+                  id="rata-codi"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  inputMode="text"
                   value={codi}
                   onChange={e => setCodi(e.target.value.toUpperCase())}
                   maxLength={30}

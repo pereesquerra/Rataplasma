@@ -36,13 +36,8 @@ export default function Parla() {
   useEffect(() => {
     if (!veuActiva) return
     const darrer = missatges[missatges.length - 1]
-    if (darrer && darrer.role === 'assistant') {
-      // Neteja emojis i asteriscs perquè el TTS no els llegeixi
-      const net = darrer.content
-        .replace(/[\p{Emoji}\u200d\ufe0f]/gu, '')
-        .replace(/[*_`~#]/g, '')
-        .trim()
-      if (net) speakAsRata(net)
+    if (darrer && darrer.role === 'assistant' && darrer.content) {
+      speakAsRata(darrer.content)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [missatges.length])
@@ -77,7 +72,7 @@ export default function Parla() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col" style={{ minHeight: '100dvh', height: '100dvh' }}>
       {/* Header */}
       <header className="flex items-center justify-between px-4 py-3 border-b border-phantom/20">
         <Link
@@ -108,8 +103,7 @@ export default function Parla() {
       {/* Xat */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-4 py-6 space-y-4"
-        style={{ maxHeight: 'calc(100vh - 140px)' }}
+        className="flex-1 overflow-y-auto px-4 py-6 space-y-4 min-h-0"
       >
         <div className="max-w-2xl mx-auto space-y-4">
           <AnimatePresence>
@@ -178,7 +172,6 @@ export default function Parla() {
             disabled={pensant}
             placeholder="diu-li alguna cosa a la rata..."
             className="flex-1 bg-ink/60 border border-phantom/30 px-4 py-3 font-terminal text-lg text-bone focus:outline-none focus:border-phantom focus:shadow-[0_0_10px_rgba(110,255,158,0.4)] transition-all disabled:opacity-50"
-            autoFocus
           />
           <button
             type="submit"
