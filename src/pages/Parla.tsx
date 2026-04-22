@@ -18,10 +18,31 @@ export default function Parla() {
   const [pensant, setPensant] = useState(false)
   const [error, setError] = useState('')
   const [veuActiva, setVeuActiva] = useState(true)
+  const [kbHeight, setKbHeight] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   // Precarrega veus del navegador (iOS les carrega asíncron)
   useEffect(() => { preloadVoices() }, [])
+
+  // Gestió del teclat mòbil: mesurem l'àrea visible real via visualViewport
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.visualViewport) return
+    const vv = window.visualViewport
+    const update = () => {
+      const hidden = Math.max(0, window.innerHeight - vv.height - vv.offsetTop)
+      setKbHeight(hidden)
+      // Força scroll a baix quan surt/entra teclat
+      scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight })
+    }
+    vv.addEventListener('resize', update)
+    vv.addEventListener('scroll', update)
+    update()
+    return () => {
+      vv.removeEventListener('resize', update)
+      vv.removeEventListener('scroll', update)
+    }
+  }, [])
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -158,13 +179,18 @@ export default function Parla() {
         </div>
       </div>
 
-      {/* Input */}
+      {/* Input ancorat a baix, es desplaça amunt quan el teclat puja */}
       <form
         onSubmit={handleSubmit}
-        className="border-t border-phantom/20 p-3 bg-ink/80 backdrop-blur-sm"
+        className="border-t border-phantom/20 p-3 bg-ink/95 backdrop-blur-sm"
+        style={{
+          paddingBottom: kbHeight > 0 ? `calc(${kbHeight}px + 0.75rem)` : undefined,
+          transition: 'padding-bottom 0.2s ease-out',
+        }}
       >
         <div className="max-w-2xl mx-auto flex gap-2">
           <input
+            ref={inputRef}
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
