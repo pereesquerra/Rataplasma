@@ -93,7 +93,10 @@ export default function Home() {
           className="mascot-layer enter-pop"
           style={{
             animationDelay: '0.3s',
-            transform: `translateX(calc(-50% + ${parallax.x * 14}px)) translateY(${parallax.y * 10}px)`,
+            // Durant el scream: sense parallax, el mascot es queda quiet i centrat
+            transform: screaming
+              ? 'translateX(-50%)'
+              : `translateX(calc(-50% + ${parallax.x * 14}px)) translateY(${parallax.y * 10}px)`,
             transition: 'transform 0.25s ease-out',
           }}
         >

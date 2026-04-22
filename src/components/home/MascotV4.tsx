@@ -13,13 +13,16 @@ const MascotV4 = forwardRef<HTMLDivElement, MascotV4Props>(function MascotV4(
 ) {
   const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 })
 
-  // Durant el scream: pupiles centrades i congelades, no segueixen cursor
+  // Durant el scream: pupiles centrades i congelades de forma SÍNCRONA (useLayoutEffect estil) no hi ha pas d'un frame
   useEffect(() => {
-    if (screaming) setPupilOffset({ x: 0, y: 0 })
+    if (screaming) {
+      setPupilOffset({ x: 0, y: 0 })
+    }
   }, [screaming])
 
   useEffect(() => {
-    if (!eyeTarget || screaming) return
+    if (!eyeTarget) return
+    if (screaming) return // NO moure pupiles durant el scream
     setPupilOffset({
       x: Math.max(-5, Math.min(5, eyeTarget.x)),
       y: Math.max(-4, Math.min(4, eyeTarget.y)),

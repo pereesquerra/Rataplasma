@@ -37,7 +37,7 @@ interface Confetti {
   size: number
 }
 
-const BUTTON_LABEL = 'RATAPLASMAAA!'
+const BUTTON_LABEL = 'RATAPLASMAAAA'
 const LETTER_COLORS = ['#4dff9f', '#a47bff', '#ff9f6b', '#ff6fa8', '#ffdc5e', '#5fc8ff']
 
 // Query param ?veu=pau|grandpa|eddy|montse (default: pau)
@@ -73,6 +73,8 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
     try {
       a.currentTime = 0
       a.play().catch(() => {})
+      // Emet un event perquè BackgroundMusic baixi el volum (ducking) mentre crida
+      window.dispatchEvent(new CustomEvent('rataplasma:scream-start'))
     } catch { /* ignore */ }
   }
 
