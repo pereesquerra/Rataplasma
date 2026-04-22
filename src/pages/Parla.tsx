@@ -18,31 +18,11 @@ export default function Parla() {
   const [pensant, setPensant] = useState(false)
   const [error, setError] = useState('')
   const [veuActiva, setVeuActiva] = useState(true)
-  const [kbHeight, setKbHeight] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   // Precarrega veus del navegador (iOS les carrega asíncron)
   useEffect(() => { preloadVoices() }, [])
-
-  // Gestió del teclat mòbil: mesurem l'àrea visible real via visualViewport
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.visualViewport) return
-    const vv = window.visualViewport
-    const update = () => {
-      const hidden = Math.max(0, window.innerHeight - vv.height - vv.offsetTop)
-      setKbHeight(hidden)
-      // Força scroll a baix quan surt/entra teclat
-      scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight })
-    }
-    vv.addEventListener('resize', update)
-    vv.addEventListener('scroll', update)
-    update()
-    return () => {
-      vv.removeEventListener('resize', update)
-      vv.removeEventListener('scroll', update)
-    }
-  }, [])
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
@@ -93,9 +73,9 @@ export default function Parla() {
   }
 
   return (
-    <div className="flex flex-col" style={{ minHeight: '100dvh', height: '100dvh' }}>
+    <div className="flex flex-col overflow-hidden" style={{ height: '100svh' }}>
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-phantom/20">
+      <header className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-phantom/20">
         <Link
           to="/"
           className="font-terminal text-phantom hover:text-haunt transition-colors text-lg"
@@ -125,6 +105,10 @@ export default function Parla() {
       <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-4 py-6 space-y-4 min-h-0"
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          overscrollBehavior: 'contain',
+        }}
       >
         <div className="max-w-2xl mx-auto space-y-4">
           <AnimatePresence>
@@ -179,14 +163,11 @@ export default function Parla() {
         </div>
       </div>
 
-      {/* Input ancorat a baix, es desplaça amunt quan el teclat puja */}
+      {/* Input ancorat a baix */}
       <form
         onSubmit={handleSubmit}
-        className="border-t border-phantom/20 p-3 bg-ink/95 backdrop-blur-sm"
-        style={{
-          paddingBottom: kbHeight > 0 ? `calc(${kbHeight}px + 0.75rem)` : undefined,
-          transition: 'padding-bottom 0.2s ease-out',
-        }}
+        className="shrink-0 border-t border-phantom/20 p-3 bg-ink/95 backdrop-blur-sm"
+        style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
         <div className="max-w-2xl mx-auto flex gap-2">
           <input
