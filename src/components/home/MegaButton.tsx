@@ -40,15 +40,15 @@ interface Confetti {
 const BUTTON_LABEL = 'RATAPLASMAAAA'
 const LETTER_COLORS = ['#4dff9f', '#a47bff', '#ff9f6b', '#ff6fa8', '#ffdc5e', '#5fc8ff']
 
-// Query param ?veu=pau|grandpa|eddy|montse (default: pau)
+// Query param ?veu=pau|grandpa|eddy|montse (default: pau v3)
 function getVeuUrl(): string {
-  if (typeof window === 'undefined') return '/crit-pau.mp3'
+  if (typeof window === 'undefined') return '/crit-pau-v3.mp3'
   const params = new URLSearchParams(window.location.search)
   const veu = params.get('veu')
   if (veu === 'grandpa') return '/crit-grandpa.m4a'
   if (veu === 'eddy') return '/crit-eddy.m4a'
   if (veu === 'montse') return '/crit-montse.m4a'
-  return '/crit-pau.mp3'
+  return '/crit-pau-v3.mp3'
 }
 
 export default function MegaButton({ onPress }: MegaButtonProps) {
@@ -59,31 +59,18 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
-  // Precarrega el clip com a HTMLAudioElement
-  useEffect(() => {
-    const a = new Audio(getVeuUrl())
-    a.preload = 'auto'
-    a.volume = 1.0
-    a.crossOrigin = 'anonymous'
-    audioRef.current = a
-  }, [])
-
+  // No precarreguem: creem l'Audio al primer clic per evitar problemes d'autoplay i de cache vella
   function tocarCrit() {
-    const a = audioRef.current
-    if (!a) return
     try {
-      a.currentTime = 0
-      const p = a.play()
-      if (p !== undefined) {
-        p.catch(() => {
-          // Fallback: Audio nou creat al clic (desbloqueja autoplay policy)
-          const fresh = new Audio(getVeuUrl())
-          fresh.volume = 1.0
-          fresh.play().catch(() => {})
-        })
-      }
+      // Un Audio nou cada vegada — així sempre agafa l'última versió i evita estats pausats
+      const a = new Audio(getVeuUrl() + '?v=3')
+      a.volume = 1.0
+      a.play().catch((err) => console.warn('[MegaButton] play falla:', err))
+      audioRef.current = a
       window.dispatchEvent(new CustomEvent('rataplasma:scream-start'))
-    } catch { /* ignore */ }
+    } catch (err) {
+      console.error('[MegaButton] excepció:', err)
+    }
   }
 
   const spawnLetterWave = () => {

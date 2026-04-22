@@ -217,9 +217,9 @@ body {
   80% { transform: translateY(-10px) rotate(-2deg) scale(0.97); }
   100% { transform: translateY(0) rotate(0) scale(1); }
 }
-/* SCREAM STATE — 4s, sync amb el crit del Pau: freeze idle float, zoom in, rapid tremble */
+/* SCREAM STATE — 6.5s, sync amb el crit del Pau (2 crits concatenats) */
 .mascot-wrap.screaming {
-  animation: screamLock 4s steps(1, end) forwards;
+  animation: screamLock 6.5s steps(1, end) forwards;
   transform-origin: 50% 35%;
 }
 @keyframes screamLock {
@@ -546,8 +546,8 @@ body {
   border-radius: 2px;
 }
 
-/* screen shake — 3.7s, sync amb el crit */
-.app.shake { animation: shake 3.7s linear; }
+/* screen shake — 6.2s, sync amb el crit */
+.app.shake { animation: shake 6.2s linear; }
 @keyframes shake {
   /* intense first 40% */
   0%   { transform: translate(0, 0) rotate(0); }
