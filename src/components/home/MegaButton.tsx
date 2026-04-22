@@ -59,23 +59,39 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
-  // Precarrega el clip com a HTMLAudioElement senzill — sense Web Audio, sense efectes sintètics
+  // Precarrega el clip com a HTMLAudioElement
   useEffect(() => {
     const a = new Audio(getVeuUrl())
     a.preload = 'auto'
     a.volume = 1.0
+    a.crossOrigin = 'anonymous'
     audioRef.current = a
   }, [])
 
   function tocarCrit() {
     const a = audioRef.current
-    if (!a) return
+    if (!a) {
+      console.warn('[MegaButton] Audio encara no s\'ha creat')
+      return
+    }
     try {
       a.currentTime = 0
-      a.play().catch(() => {})
-      // Emet un event perquè BackgroundMusic baixi el volum (ducking) mentre crida
+      const p = a.play()
+      if (p !== undefined) {
+        p.then(() => {
+          console.log('[MegaButton] crit sonant OK')
+        }).catch((err) => {
+          console.error('[MegaButton] play() ha fallat:', err)
+          // Fallback: prova un Audio nou creat en el moment del clic
+          const fresh = new Audio(getVeuUrl())
+          fresh.volume = 1.0
+          fresh.play().catch(e => console.error('[MegaButton] fallback també falla:', e))
+        })
+      }
       window.dispatchEvent(new CustomEvent('rataplasma:scream-start'))
-    } catch { /* ignore */ }
+    } catch (err) {
+      console.error('[MegaButton] excepció a tocarCrit:', err)
+    }
   }
 
   const spawnLetterWave = () => {
