@@ -71,7 +71,7 @@ export function speakAsRata(text: string): void {
     utter.lang = 'ca-ES'
   }
   utter.pitch = 1.6
-  utter.rate = 1.15
+  utter.rate = 1.0
   utter.volume = 1.0
   window.speechSynthesis.speak(utter)
 }
