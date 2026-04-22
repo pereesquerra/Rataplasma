@@ -65,6 +65,16 @@
     z-index: 3;
     min-height: 100vh;
   }
+
+  /* Quan el xat està bloquejat, #root agafa alçada real de la finestra
+     visible, inclou safe-area, i no desborda */
+  body.chat-lock #root {
+    position: fixed;
+    inset: 0;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+  }
 }
 
 @layer components {

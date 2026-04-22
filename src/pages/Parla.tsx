@@ -83,7 +83,7 @@ export default function Parla() {
   }
 
   return (
-    <div className="flex flex-col overflow-hidden" style={{ height: '100svh' }}>
+    <div className="flex flex-col h-full overflow-hidden">
       {/* Header */}
       <header className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-phantom/20">
         <Link
