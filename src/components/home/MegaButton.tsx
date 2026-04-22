@@ -101,19 +101,56 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
     if (!ctx || !buffer) return
     if (ctx.state === 'suspended') ctx.resume()
 
+    const now = ctx.currentTime
+
     const source = ctx.createBufferSource()
     source.buffer = buffer
 
     const master = ctx.createGain()
-    master.gain.value = 1.3
+    master.gain.value = 1.6
     master.connect(ctx.destination)
 
+    // ======== BOOM sub-bass de baix — "shockwave sonora" ========
+    const boom = ctx.createOscillator()
+    boom.type = 'sine'
+    boom.frequency.setValueAtTime(140, now)
+    boom.frequency.exponentialRampToValueAtTime(30, now + 0.7)
+    const boomGain = ctx.createGain()
+    boomGain.gain.setValueAtTime(0, now)
+    boomGain.gain.linearRampToValueAtTime(1.3, now + 0.02)
+    boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.9)
+    boom.connect(boomGain)
+    boomGain.connect(master)
+    boom.start(now)
+    boom.stop(now + 1.0)
+
+    // ======== THUMP — white noise burst filtrat, impacte inicial ========
+    const noiseDur = 0.18
+    const noiseBuf = ctx.createBuffer(1, ctx.sampleRate * noiseDur, ctx.sampleRate)
+    const nd = noiseBuf.getChannelData(0)
+    for (let i = 0; i < nd.length; i++) {
+      nd[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / nd.length, 2)
+    }
+    const noiseSrc = ctx.createBufferSource()
+    noiseSrc.buffer = noiseBuf
+    const noiseLP = ctx.createBiquadFilter()
+    noiseLP.type = 'lowpass'
+    noiseLP.frequency.value = 450
+    noiseLP.Q.value = 0.8
+    const noiseGain = ctx.createGain()
+    noiseGain.gain.value = 0.75
+    noiseSrc.connect(noiseLP)
+    noiseLP.connect(noiseGain)
+    noiseGain.connect(master)
+    noiseSrc.start(now)
+
+    // ======== CRIT principal amb distorsió lleu + reverb ========
     const dryGain = ctx.createGain()
-    dryGain.gain.value = 0.85
+    dryGain.gain.value = 0.95
     dryGain.connect(master)
 
     const wetGain = ctx.createGain()
-    wetGain.gain.value = 0.35
+    wetGain.gain.value = 0.5
     wetGain.connect(master)
 
     if (impulse) {
@@ -123,15 +160,27 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
       convolver.connect(wetGain)
     }
 
+    // Distorsió lleu (tanh) per fer el crit més agressiu
+    const shaper = ctx.createWaveShaper()
+    const curve = new Float32Array(1024)
+    for (let i = 0; i < 1024; i++) {
+      const x = (i - 512) / 512
+      curve[i] = Math.tanh(x * 2.5)
+    }
+    shaper.curve = curve
+    shaper.oversample = '2x'
+
     const filter = ctx.createBiquadFilter()
     filter.type = 'peaking'
     filter.frequency.value = 1800
-    filter.gain.value = 2
+    filter.gain.value = 4
     filter.Q.value = 1
-    source.connect(filter)
-    filter.connect(dryGain)
 
-    source.start(0)
+    source.connect(filter)
+    filter.connect(shaper)
+    shaper.connect(dryGain)
+
+    source.start(now)
   }
 
   const spawnLetterWave = () => {
