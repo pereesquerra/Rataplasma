@@ -43,24 +43,27 @@ const CARDS: CardDef[] = [
   },
 ]
 
-const MINI_CARDS: Omit<CardDef, 'locked'>[] = [
+const MINI_CARDS: CardDef[] = [
   {
     id: 'music', title: 'Música', icon: '🎵',
     accent: 'linear-gradient(135deg, #ffdc5e 0%, #e8a91f 100%)',
     shadow: 'rgba(255, 220, 94, 0.45)',
     glow: 'radial-gradient(circle, rgba(255, 220, 94, 0.55), transparent 70%)',
+    locked: false,
   },
   {
     id: 'bikes', title: 'Bicis', icon: '🚴',
     accent: 'linear-gradient(135deg, #5fc8ff 0%, #2a88d4 100%)',
     shadow: 'rgba(95, 200, 255, 0.45)',
     glow: 'radial-gradient(circle, rgba(95, 200, 255, 0.55), transparent 70%)',
+    locked: true,
   },
   {
     id: 'puzzles', title: 'Puzles', icon: '🧩',
     accent: 'linear-gradient(135deg, #ff4fa8 0%, #c8227e 100%)',
     shadow: 'rgba(255, 79, 168, 0.45)',
     glow: 'radial-gradient(circle, rgba(255, 79, 168, 0.55), transparent 70%)',
+    locked: true,
   },
 ]
 
@@ -78,7 +81,7 @@ export default function NavCards({ onSelect }: NavCardsProps) {
       </div>
       <div className="mini-cards">
         {MINI_CARDS.map((card, i) => (
-          <MiniCard key={card.id} card={card} delay={0.5 + i * 0.06} />
+          <MiniCard key={card.id} card={card} delay={0.5 + i * 0.06} onSelect={onSelect} />
         ))}
       </div>
     </div>
@@ -162,11 +165,12 @@ function NavCard({ card, delay, onSelect }: NavCardProps) {
 }
 
 interface MiniCardProps {
-  card: Omit<CardDef, 'locked'>
+  card: CardDef
   delay: number
+  onSelect?: (id: CardId) => void
 }
 
-function MiniCard({ card, delay }: MiniCardProps) {
+function MiniCard({ card, delay, onSelect }: MiniCardProps) {
   const style: CSSProperties = {
     animationDelay: `${delay}s`,
     ['--card-accent' as string]: card.accent,
@@ -174,7 +178,11 @@ function MiniCard({ card, delay }: MiniCardProps) {
     ['--card-glow' as string]: card.glow,
   }
   return (
-    <div className="mini-card enter-up locked" style={style}>
+    <div
+      className={`mini-card enter-up ${card.locked ? 'locked' : ''}`}
+      style={style}
+      onClick={() => !card.locked && onSelect?.(card.id)}
+    >
       <div className="card-glow" />
       <div className="mini-card-icon">
         <span>{card.icon}</span>
@@ -182,8 +190,17 @@ function MiniCard({ card, delay }: MiniCardProps) {
       <div className="mini-card-body">
         <div className="mini-card-title">{card.title}</div>
         <div className="mini-card-sub">
-          <span className="mini-lock">🔒</span>
-          aviat
+          {card.locked ? (
+            <>
+              <span className="mini-lock">🔒</span>
+              aviat
+            </>
+          ) : (
+            <>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#4dff9f', boxShadow: '0 0 6px #4dff9f' }} />
+              llest
+            </>
+          )}
         </div>
       </div>
     </div>

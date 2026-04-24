@@ -70,6 +70,7 @@ export default function Home() {
 
   const handleCardSelect = (id: string) => {
     if (id === 'chat') navigate('/parla')
+    else if (id === 'music') navigate('/musica')
     // la resta locked, no fa res
   }
 
