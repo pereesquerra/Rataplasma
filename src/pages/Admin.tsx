@@ -7,7 +7,6 @@ import {
   approveRequest,
   rejectRequest,
   PendingRequest,
-  INVITATION_CODE,
   getUser,
 } from '@/lib/auth'
 
@@ -21,7 +20,6 @@ export default function Admin() {
       return []
     }
   })
-  const [copied, setCopied] = useState(false)
 
   function refresh() {
     setPeticions(getPendingRequests())
@@ -47,12 +45,6 @@ export default function Admin() {
   function handleReject(id: string) {
     rejectRequest(id)
     refresh()
-  }
-
-  function copyCodi() {
-    navigator.clipboard.writeText(INVITATION_CODE)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
@@ -90,31 +82,6 @@ export default function Admin() {
               </p>
             </div>
           </motion.div>
-
-          {/* Codi d'invitació */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="panel"
-          >
-            <div className="terminal-label mb-2">&gt; codi_invitacio_actual</div>
-            <div className="flex items-center gap-3">
-              <code className="flex-1 bg-ink/60 border border-voltage/40 px-4 py-3 font-terminal text-2xl text-voltage tracking-widest">
-                {INVITATION_CODE}
-              </code>
-              <button
-                onClick={copyCodi}
-                className="px-4 py-3 border border-voltage/40 font-pixel text-sm text-voltage hover:bg-voltage/10 transition-colors tracking-wider"
-              >
-                {copied ? '✓ COPIAT' : 'COPIA'}
-              </button>
-            </div>
-            <p className="font-terminal text-bone/60 mt-3 text-sm">
-              dóna aquest codi als amics que vulguis que entrin. (en futures versions podràs
-              crear codis personalitzats per cada amic)
-            </p>
-          </motion.section>
 
           {/* Peticions pendents */}
           <motion.section

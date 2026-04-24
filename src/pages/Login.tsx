@@ -2,15 +2,13 @@ import { useState, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
 import Mascot from '@/components/Mascot'
-import { login, addPendingRequest } from '@/lib/auth'
+import { login } from '@/lib/auth'
 
 export default function Login() {
   const navigate = useNavigate()
   const [nom, setNom] = useState('')
   const [codi, setCodi] = useState('')
   const [error, setError] = useState('')
-  const [requestSent, setRequestSent] = useState(false)
-  const [mode, setMode] = useState<'login' | 'request'>('login')
 
   function handleLogin(e: FormEvent) {
     e.preventDefault()
@@ -21,17 +19,6 @@ export default function Login() {
     } else {
       setError(res.error || 'Error desconegut')
     }
-  }
-
-  function handleRequest(e: FormEvent) {
-    e.preventDefault()
-    const trimmed = nom.trim()
-    if (trimmed.length < 2) {
-      setError('El nom és massa curt')
-      return
-    }
-    addPendingRequest(trimmed)
-    setRequestSent(true)
   }
 
   return (
@@ -52,12 +39,10 @@ export default function Login() {
             IDENTIFICA'T
           </h1>
           <p className="font-terminal text-xl text-bone/80 mb-6">
-            {mode === 'login'
-              ? 'Entra amb el teu nom i el codi que t\'ha donat el Pau'
-              : 'El Pau rebrà la teva petició i decidirà si pots entrar'}
+            Entra amb el teu nom i el codi
           </p>
 
-          <form onSubmit={mode === 'login' ? handleLogin : handleRequest} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="terminal-label block mb-1" htmlFor="rata-nom">el teu nom</label>
               <input
@@ -75,23 +60,21 @@ export default function Login() {
               />
             </div>
 
-            {mode === 'login' && (
-              <div>
-                <label className="terminal-label block mb-1" htmlFor="rata-codi">codi secret</label>
-                <input
-                  id="rata-codi"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  inputMode="text"
-                  value={codi}
-                  onChange={e => setCodi(e.target.value.toUpperCase())}
-                  maxLength={30}
-                  className="w-full bg-ink/60 border border-phantom/30 px-4 py-3 font-terminal text-xl text-bone focus:outline-none focus:border-phantom focus:shadow-[0_0_10px_rgba(110,255,158,0.5)] transition-all uppercase tracking-widest"
-                  placeholder="XXXX-XXXX"
-                />
-              </div>
-            )}
+            <div>
+              <label className="terminal-label block mb-1" htmlFor="rata-codi">codi secret</label>
+              <input
+                id="rata-codi"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                inputMode="text"
+                value={codi}
+                onChange={e => setCodi(e.target.value.toUpperCase())}
+                maxLength={30}
+                className="w-full bg-ink/60 border border-phantom/30 px-4 py-3 font-terminal text-xl text-bone focus:outline-none focus:border-phantom focus:shadow-[0_0_10px_rgba(110,255,158,0.5)] transition-all uppercase tracking-widest"
+                placeholder="ADMINPLASMA"
+              />
+            </div>
 
             {error && (
               <motion.div
@@ -103,35 +86,13 @@ export default function Login() {
               </motion.div>
             )}
 
-            {requestSent ? (
-              <div className="font-terminal text-phantom text-lg text-center py-4">
-                ✓ Petició enviada! El Pau te l'ha de confirmar.
-              </div>
-            ) : (
-              <button
-                type="submit"
-                className="w-full btn-rataplasma !text-xl !py-4"
-              >
-                {mode === 'login' ? 'ENTRA' : 'DEMANA ACCÉS'}
-              </button>
-            )}
+            <button
+              type="submit"
+              className="w-full btn-rataplasma !text-xl !py-4"
+            >
+              ENTRA
+            </button>
           </form>
-
-          {!requestSent && (
-            <div className="mt-6 pt-4 border-t border-phantom/20 text-center">
-              <button
-                onClick={() => {
-                  setMode(mode === 'login' ? 'request' : 'login')
-                  setError('')
-                }}
-                className="font-terminal text-voltage hover:text-phantom transition-colors text-lg underline underline-offset-4"
-              >
-                {mode === 'login'
-                  ? 'No tens codi? Demana permís al Pau'
-                  : 'Ja tens codi? Entra aquí'}
-              </button>
-            </div>
-          )}
         </motion.div>
 
         <div className="mt-6 text-center font-terminal text-bone/40 text-sm">
