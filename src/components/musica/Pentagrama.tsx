@@ -70,10 +70,10 @@ export default function Pentagrama({ instrument }: Props) {
             <button
               key={c.id}
               onClick={() => setCancoId(c.id)}
-              className={`px-3 py-2 rounded-lg font-terminal text-sm border-2 transition-all ${
+              className={`px-3 py-2 rounded-[14px_18px_12px_20px] font-terminal text-sm font-bold border-[3px] border-midnight shadow-[3px_3px_0_var(--hb-midnight)] transition-all ${
                 cancoId === c.id
-                  ? 'bg-phantom text-ink border-phantom'
-                  : 'bg-mist/40 text-bone border-phantom/40 hover:border-phantom'
+                  ? 'bg-mustard text-midnight'
+                  : 'bg-moonbeam text-midnight hover:bg-ghost-blue'
               }`}
             >
               {c.titol}
@@ -82,14 +82,14 @@ export default function Pentagrama({ instrument }: Props) {
         </div>
         <button
           onClick={tocarCanco}
-          className="ml-2 px-5 py-2 rounded-full bg-gradient-to-br from-phantom to-haunt text-ink font-pixel text-sm border-2 border-ink/30 shadow-[0_4px_0_rgba(0,0,0,0.4)] active:translate-y-1 active:shadow-none transition-transform"
+          className="hb-button ml-2 px-5 py-2 text-sm"
         >
           {playing ? '■ ATURA' : '▶ TOCAR'}
         </button>
       </div>
 
       {/* Pentagrama SVG scrollable horitzontalment */}
-      <div className="overflow-x-auto rounded-xl bg-bone/95 p-4 shadow-inner border-2 border-phantom/30">
+      <div className="overflow-x-auto rounded-[18px_22px_16px_24px] bg-[#fff8dc] p-4 border-[4px] border-midnight shadow-[6px_6px_0_var(--hb-midnight)]">
         <svg
           viewBox={`0 0 ${width} 180`}
           width={width}
@@ -98,11 +98,11 @@ export default function Pentagrama({ instrument }: Props) {
           style={{ minWidth: '100%' }}
         >
           {/* Clau de sol simplificada */}
-          <text x="20" y="115" fontSize="60" fill="#1a0830" fontFamily="serif">𝄞</text>
+          <text x="20" y="115" fontSize="60" fill="#1a1f3a" fontFamily="serif">𝄞</text>
 
           {/* 5 línies del pentagrama */}
           {[80, 90, 100, 110, 120].map(y => (
-            <line key={y} x1="90" y1={y} x2={width - 20} y2={y} stroke="#1a0830" strokeWidth="1.5"/>
+            <line key={y} x1="90" y1={y} x2={width - 20} y2={y} stroke="#1a1f3a" strokeWidth="1.8"/>
           ))}
 
           {/* Notes */}
@@ -117,7 +117,7 @@ export default function Pentagrama({ instrument }: Props) {
             return (
               <g key={i} className="cursor-pointer" onClick={() => tocarNota(noteIdx)}>
                 {showLedger && (
-                  <line x1={x - 12} y1={140} x2={x + 12} y2={140} stroke="#1a0830" strokeWidth="1.5"/>
+                  <line x1={x - 12} y1={140} x2={x + 12} y2={140} stroke="#1a1f3a" strokeWidth="1.8"/>
                 )}
                 {/* cap de nota */}
                 <ellipse
@@ -126,7 +126,7 @@ export default function Pentagrama({ instrument }: Props) {
                   rx="10"
                   ry="7"
                   fill={isActive ? '#ff4466' : color}
-                  stroke="#1a0830"
+                  stroke="#1a1f3a"
                   strokeWidth="2"
                   transform={`rotate(-20 ${x} ${y})`}
                 >
@@ -144,14 +144,14 @@ export default function Pentagrama({ instrument }: Props) {
                   y1={y - 2}
                   x2={x + 9}
                   y2={y - 35}
-                  stroke="#1a0830"
+                  stroke="#1a1f3a"
                   strokeWidth="2"
                 />
                 {/* corxera flag si dur < 2 */}
                 {dur < 2 && (
                   <path
                     d={`M ${x + 9} ${y - 35} Q ${x + 20} ${y - 28} ${x + 16} ${y - 18}`}
-                    stroke="#1a0830"
+                    stroke="#1a1f3a"
                     strokeWidth="2"
                     fill="none"
                   />
@@ -161,7 +161,7 @@ export default function Pentagrama({ instrument }: Props) {
                   x={x}
                   y="165"
                   fontSize="11"
-                  fill={isActive ? '#ff4466' : '#1a0830'}
+                  fill={isActive ? '#b9362c' : '#1a1f3a'}
                   textAnchor="middle"
                   fontWeight="700"
                   fontFamily="monospace"
@@ -174,7 +174,7 @@ export default function Pentagrama({ instrument }: Props) {
         </svg>
       </div>
 
-      <p className="text-bone/60 text-sm font-terminal text-center mt-2">
+      <p className="text-midnight/60 text-sm font-terminal text-center mt-3">
         clica qualsevol nota per tocar-la · o prem ▶ per escoltar sencera
       </p>
     </div>

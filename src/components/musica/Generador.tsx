@@ -44,20 +44,20 @@ export default function Generador({ instrument }: Props) {
   return (
     <div className="w-full">
       {/* Caixa amb la seqüència gravada */}
-      <div className="min-h-[90px] rounded-xl bg-mist/60 border-2 border-phantom/30 p-3 mb-3 flex flex-wrap gap-1 items-start content-start">
+      <div className="min-h-[96px] rounded-[18px_22px_16px_24px] bg-[#fff8dc] border-[4px] border-midnight shadow-[6px_6px_0_var(--hb-midnight)] p-3 mb-3 flex flex-wrap gap-1 items-start content-start">
         {sequencia.length === 0 ? (
-          <span className="text-bone/50 font-terminal text-sm self-center w-full text-center">
+          <span className="text-midnight/55 font-terminal text-sm self-center w-full text-center">
             prem les tecles per gravar la teva cançó (fins a 32 notes)
           </span>
         ) : sequencia.map((noteIdx, i) => (
           <div
             key={i}
-            className="w-11 h-16 rounded-md flex items-end justify-center pb-1 font-pixel text-xs border-2 transition-all"
+            className="w-11 h-16 rounded-[6px_8px_6px_9px] flex items-end justify-center pb-1 font-pixel text-xs border-[3px] transition-all"
             style={{
               background: NOTE_COLORS[noteIdx],
-              borderColor: currentIdx === i ? '#ff4466' : 'rgba(0,0,0,0.25)',
+              borderColor: currentIdx === i ? '#b9362c' : '#1a1f3a',
               transform: currentIdx === i ? 'translateY(-4px) scale(1.1)' : 'none',
-              color: '#1a0830',
+              color: '#1a1f3a',
             }}
           >
             {SOLFEIG_NOTES[noteIdx]}
@@ -72,12 +72,12 @@ export default function Generador({ instrument }: Props) {
             key={i}
             onMouseDown={() => afegirNota(i)}
             onTouchStart={(e) => { e.preventDefault(); afegirNota(i) }}
-            className="h-20 rounded-lg font-pixel text-sm select-none active:translate-y-1 transition-transform border-2"
+            className="h-20 rounded-[8px_10px_8px_12px] font-pixel text-sm select-none active:translate-y-1 transition-transform border-[3px]"
             style={{
               background: NOTE_COLORS[i],
-              borderColor: 'rgba(0,0,0,0.3)',
-              boxShadow: `0 5px 0 ${NOTE_COLORS[i]}88`,
-              color: '#1a0830',
+              borderColor: '#1a1f3a',
+              boxShadow: '0 5px 0 #1a1f3a',
+              color: '#1a1f3a',
             }}
           >
             {nota}
@@ -90,21 +90,21 @@ export default function Generador({ instrument }: Props) {
         <button
           onClick={reproduir}
           disabled={sequencia.length === 0}
-          className="px-5 py-2 rounded-full bg-gradient-to-br from-phantom to-haunt text-ink font-pixel text-sm border-2 border-ink/30 shadow-[0_4px_0_rgba(0,0,0,0.4)] active:translate-y-1 active:shadow-none transition-transform disabled:opacity-40 disabled:cursor-not-allowed"
+          className="hb-button px-5 py-2 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {playing ? '■ ATURA' : '▶ TOCAR'}
         </button>
         <button
           onClick={desfer}
           disabled={sequencia.length === 0}
-          className="px-4 py-2 rounded-full bg-mist/60 text-bone font-pixel text-sm border-2 border-phantom/40 hover:border-phantom active:translate-y-0.5 transition-transform disabled:opacity-40"
+          className="px-4 py-2 rounded-full bg-moonbeam text-midnight font-pixel text-sm border-[3px] border-midnight shadow-[3px_3px_0_var(--hb-midnight)] active:translate-y-0.5 transition-transform disabled:opacity-40"
         >
           ⟲ desfer
         </button>
         <button
           onClick={esborrar}
           disabled={sequencia.length === 0}
-          className="px-4 py-2 rounded-full bg-blood/80 text-bone font-pixel text-sm border-2 border-ink/30 hover:bg-blood active:translate-y-0.5 transition-transform disabled:opacity-40"
+          className="px-4 py-2 rounded-full bg-blood text-moonbeam font-pixel text-sm border-[3px] border-midnight shadow-[3px_3px_0_var(--hb-midnight)] active:translate-y-0.5 transition-transform disabled:opacity-40"
         >
           ✕ esborrar
         </button>
