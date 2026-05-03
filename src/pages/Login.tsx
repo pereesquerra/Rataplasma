@@ -22,29 +22,30 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-        <div className="flex justify-center mb-6">
-          <Mascot size={160} />
+    <div className="hb-page hb-paper min-h-screen flex flex-col items-center justify-center px-4 py-12">
+      <div className="absolute inset-x-0 top-[8%] mx-auto h-40 max-w-3xl rounded-[45%_55%_50%_50%] bg-mustard border-[4px] border-midnight shadow-[8px_8px_0_var(--hb-midnight)] rotate-[-2deg] opacity-80" />
+      <div className="relative w-full max-w-md">
+        <div className="absolute -right-4 -top-16 w-32 rotate-6 sm:-right-20">
+          <Mascot size={128} />
         </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="panel"
+          className="panel bg-moonbeam/95"
         >
-          <div className="terminal-label mb-1">&gt; sistema_rataplasma</div>
-          <h1 className="font-pixel text-3xl text-phantom text-glow-phantom mb-2 crt-flicker">
-            IDENTIFICA'T
+          <div className="terminal-label mb-1">mystery van · rataplasma</div>
+          <h1 className="hb-title text-4xl mb-2">
+            ENTRA SI T'ATREVEIXES
           </h1>
-          <p className="font-terminal text-xl text-bone/80 mb-6">
+          <p className="font-terminal text-xl text-midnight/80 mb-6">
             Entra amb el teu nom i el codi
           </p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="terminal-label block mb-1" htmlFor="rata-nom">el teu nom</label>
+              <label className="terminal-label block mb-1" htmlFor="rata-nom">NOM</label>
               <input
                 id="rata-nom"
                 name="username"
@@ -54,14 +55,14 @@ export default function Login() {
                 value={nom}
                 onChange={e => setNom(e.target.value)}
                 maxLength={20}
-                className="w-full bg-ink/60 border border-phantom/30 px-4 py-3 font-terminal text-xl text-bone focus:outline-none focus:border-phantom focus:shadow-[0_0_10px_rgba(110,255,158,0.5)] transition-all"
+                className="hb-input w-full px-4 py-3 text-xl"
                 placeholder="ex. Marc"
                 autoFocus
               />
             </div>
 
             <div>
-              <label className="terminal-label block mb-1" htmlFor="rata-codi">codi secret</label>
+              <label className="terminal-label block mb-1" htmlFor="rata-codi">CODI SECRET</label>
               <input
                 id="rata-codi"
                 name="password"
@@ -71,7 +72,7 @@ export default function Login() {
                 value={codi}
                 onChange={e => setCodi(e.target.value.toUpperCase())}
                 maxLength={30}
-                className="w-full bg-ink/60 border border-phantom/30 px-4 py-3 font-terminal text-xl text-bone focus:outline-none focus:border-phantom focus:shadow-[0_0_10px_rgba(110,255,158,0.5)] transition-all uppercase tracking-widest"
+                className="hb-input w-full px-4 py-3 text-xl uppercase tracking-widest"
                 placeholder="ADMINPLASMA"
               />
             </div>
@@ -80,7 +81,7 @@ export default function Login() {
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="font-terminal text-blood text-lg"
+                className="font-terminal text-blood text-lg font-bold"
               >
                 ⚠ {error}
               </motion.div>
@@ -88,14 +89,14 @@ export default function Login() {
 
             <button
               type="submit"
-              className="w-full btn-rataplasma !text-xl !py-4"
+              className="w-full hb-button !text-xl !py-4"
             >
               ENTRA
             </button>
           </form>
         </motion.div>
 
-        <div className="mt-6 text-center font-terminal text-bone/40 text-sm">
+        <div className="mt-6 text-center font-terminal text-midnight/50 text-sm">
           rataplasma.com · prohibit als avorrits
         </div>
       </div>

@@ -48,16 +48,16 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="flex items-center justify-between px-4 py-3 border-b border-phantom/20">
+    <div className="hb-page hb-paper min-h-screen flex flex-col">
+      <header className="hb-header flex items-center justify-between gap-3">
         <Link
           to="/"
-          className="font-terminal text-phantom hover:text-haunt transition-colors text-lg"
+          className="hb-back"
         >
           ← tornar
         </Link>
-        <div className="font-pixel text-voltage text-sm tracking-wider">
-          [PANEL ADMIN]
+        <div className="hb-title text-sm">
+          PANEL ADMIN
         </div>
       </header>
 
@@ -67,17 +67,17 @@ export default function Admin() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-4"
+            className="hb-card flex items-center gap-4 p-4 bg-moonbeam/95"
           >
-            <div className="w-20 h-20">
+            <div className="w-20 h-20 rounded-full bg-ghost-blue/40 border-[3px] border-midnight">
               <Mascot size={80} />
             </div>
             <div>
               <div className="terminal-label">benvingut</div>
-              <h1 className="font-pixel text-2xl text-phantom text-glow-phantom">
+              <h1 className="hb-title text-2xl">
                 REI {user.nom.toUpperCase()}
               </h1>
-              <p className="font-terminal text-bone/70">
+              <p className="font-terminal text-midnight/70">
                 tu controles qui entra a rataplasma.com
               </p>
             </div>
@@ -90,11 +90,18 @@ export default function Admin() {
             transition={{ delay: 0.2 }}
           >
             <div className="terminal-label mb-3">
-              &gt; peticions_pendents ({peticions.length})
+              pissarra de suro · peticions pendents ({peticions.length})
             </div>
             {peticions.length === 0 ? (
-              <div className="panel text-center py-8">
-                <div className="font-terminal text-bone/60">
+              <div className="hb-card relative text-center py-10 px-6 bg-[#c58d58] overflow-hidden">
+                <div className="absolute inset-4 border-[2px] border-midnight/30" />
+                <div className="relative mx-auto mb-4 w-24">
+                  <Mascot size={96} />
+                </div>
+                <div className="relative hb-title text-2xl">
+                  tot tranquil al món real
+                </div>
+                <div className="relative font-terminal text-midnight/70 mt-2">
                   Cap petició pendent. Quan algun amic demani entrar, el veuràs aquí.
                 </div>
               </div>
@@ -105,24 +112,24 @@ export default function Admin() {
                     key={req.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="panel flex items-center justify-between"
+                    className="hb-card flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-[#f7e7b0]"
                   >
                     <div>
-                      <div className="font-pixel text-phantom text-lg">{req.nom}</div>
-                      <div className="font-terminal text-bone/50 text-sm">
+                      <div className="hb-title text-lg">{req.nom}</div>
+                      <div className="font-terminal text-midnight/60 text-sm">
                         vol entrar · {new Date(req.requestedAt).toLocaleString('ca-ES')}
                       </div>
                     </div>
                     <div className="flex gap-2">
                       <button
                         onClick={() => handleApprove(req.id)}
-                        className="px-4 py-2 bg-phantom text-ink font-pixel text-sm tracking-wider hover:bg-haunt transition-colors"
+                        className="hb-button px-4 py-2 text-sm"
                       >
                         ✓ DEIXA'L
                       </button>
                       <button
                         onClick={() => handleReject(req.id)}
-                        className="px-4 py-2 border border-blood/50 text-blood font-pixel text-sm tracking-wider hover:bg-blood/20 transition-colors"
+                        className="px-4 py-2 border-[3px] border-midnight bg-harvest text-moonbeam rounded-full font-pixel text-sm shadow-[3px_3px_0_var(--hb-midnight)]"
                       >
                         ✗ FORA
                       </button>
@@ -141,13 +148,13 @@ export default function Admin() {
               transition={{ delay: 0.3 }}
             >
               <div className="terminal-label mb-3">
-                &gt; amics_aprovats ({nomsAprovats.length})
+                fotos aprovades ({nomsAprovats.length})
               </div>
-              <div className="panel flex flex-wrap gap-2">
+              <div className="hb-card flex flex-wrap gap-2 p-4 bg-[#c58d58]">
                 {nomsAprovats.map((n, i) => (
                   <span
                     key={i}
-                    className="inline-block px-3 py-1 bg-phantom/20 border border-phantom/40 font-terminal text-phantom"
+                    className="inline-block px-3 py-1 bg-moonbeam border-[2px] border-midnight font-terminal text-midnight rotate-[-1deg]"
                   >
                     {n}
                   </span>
@@ -157,7 +164,7 @@ export default function Admin() {
           )}
 
           {/* Info Fase 1 */}
-          <div className="font-terminal text-bone/40 text-sm text-center border-t border-phantom/10 pt-6">
+          <div className="font-terminal text-midnight/50 text-sm text-center border-t-[3px] border-midnight/20 pt-6">
             Fase 1 · l'aprovació de peticions és simbòlica (el codi ja els serveix).<br />
             A la Fase 2 migrarem a base de dades real amb codis únics per persona.
           </div>

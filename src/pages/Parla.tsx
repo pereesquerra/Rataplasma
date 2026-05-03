@@ -83,26 +83,26 @@ export default function Parla() {
   }
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
+    <div className="hb-page hb-paper flex flex-col h-full overflow-hidden">
       {/* Header */}
-      <header className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-phantom/20">
+      <header className="hb-header shrink-0 flex items-center justify-between gap-3">
         <Link
           to="/"
-          className="font-terminal text-phantom hover:text-haunt transition-colors text-lg"
+          className="hb-back"
         >
           ← tornar
         </Link>
         <div className="flex items-center gap-2">
-          <div className="w-12 h-12">
+          <div className="w-12 h-12 rounded-full bg-ghost-blue/40 border-[3px] border-midnight shadow-[3px_3px_0_var(--hb-midnight)]">
             <Mascot size={48} />
           </div>
           <div>
-            <div className="font-pixel text-phantom text-sm tracking-wider">LA RATA</div>
-            <div className="font-terminal text-bone/60 text-xs">en línia · fantasma</div>
+            <div className="hb-title text-sm">LA RATA</div>
+            <div className="font-terminal text-midnight/60 text-xs">en línia · fantasma</div>
           </div>
           <button
             onClick={toggleVeu}
-            className="ml-2 p-2 rounded-full border border-phantom/30 hover:border-phantom transition-colors font-terminal text-xl leading-none"
+            className="ml-2 h-11 w-11 rounded-full border-[3px] border-midnight bg-mustard shadow-[3px_3px_0_var(--hb-midnight)] font-terminal text-xl leading-none active:translate-x-[2px] active:translate-y-[2px]"
             title={veuActiva ? 'Silencia la veu de la Rata' : 'Activa la veu de la Rata'}
             aria-label={veuActiva ? 'Silencia la veu' : 'Activa la veu'}
           >
@@ -114,13 +114,34 @@ export default function Parla() {
       {/* Xat */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-4 py-6 space-y-4 min-h-0"
+        className="relative flex-1 overflow-y-auto px-4 py-6 space-y-4 min-h-0"
         style={{
           WebkitOverflowScrolling: 'touch',
           overscrollBehavior: 'contain',
         }}
       >
-        <div className="max-w-2xl mx-auto space-y-4">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          {['ZOINKS!', 'JINKIES!', 'RATAPLASMA!', '?!'].map((word, i) => (
+            <div
+              key={word}
+              className="hb-comic-word absolute opacity-[0.10]"
+              style={{
+                top: `${12 + i * 20}%`,
+                left: i % 2 === 0 ? '7%' : '68%',
+                transform: `rotate(${i % 2 === 0 ? -8 : 7}deg)`,
+                fontSize: i === 2 ? 'clamp(40px, 8vw, 96px)' : 'clamp(30px, 6vw, 72px)',
+              }}
+            >
+              {word}
+            </div>
+          ))}
+        </div>
+
+        <div className="pointer-events-none fixed right-3 bottom-24 hidden sm:block w-24 opacity-90">
+          <Mascot size={96} />
+        </div>
+
+        <div className="relative max-w-3xl mx-auto space-y-4">
           <AnimatePresence>
             {missatges.map((m, i) => (
               <motion.div
@@ -131,20 +152,23 @@ export default function Parla() {
                 className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] px-4 py-3 font-terminal text-lg leading-relaxed ${
+                  className={`relative max-w-[82%] px-4 py-3 font-body text-base sm:text-lg leading-relaxed border-[3px] border-midnight shadow-[4px_4px_0_var(--hb-midnight)] ${
                     m.role === 'user'
-                      ? 'bg-voltage/20 border border-voltage/40 text-bone'
-                      : 'bg-phantom/10 border border-phantom/40 text-bone'
+                      ? 'bg-avocado text-midnight rounded-[24px_20px_8px_24px]'
+                      : 'bg-mustard text-midnight rounded-[20px_24px_24px_8px]'
                   }`}
                 >
                   <div
-                    className={`terminal-label text-xs mb-1 ${
-                      m.role === 'user' ? 'text-voltage' : 'text-phantom'
-                    }`}
+                    className="terminal-label text-xs mb-1"
                   >
                     {m.role === 'user' ? user.nom.toLowerCase() : 'rata'}
                   </div>
                   <div className="whitespace-pre-wrap">{m.content}</div>
+                  <span
+                    className={`absolute bottom-[-11px] h-5 w-5 rotate-45 border-r-[3px] border-b-[3px] border-midnight ${
+                      m.role === 'user' ? 'right-6 bg-avocado' : 'left-6 bg-mustard'
+                    }`}
+                  />
                 </div>
               </motion.div>
             ))}
@@ -156,7 +180,7 @@ export default function Parla() {
               animate={{ opacity: 1 }}
               className="flex justify-start"
             >
-              <div className="bg-phantom/10 border border-phantom/40 px-4 py-3 font-terminal text-bone/70 text-lg">
+              <div className="bg-ghost-blue/70 border-[3px] border-midnight rounded-[20px_24px_24px_8px] shadow-[4px_4px_0_var(--hb-midnight)] px-4 py-3 font-terminal text-midnight/80 text-lg">
                 <span className="animate-pulse">la rata està pensant</span>
                 <span className="inline-block ml-1">
                   <span className="animate-pulse">.</span>
@@ -168,7 +192,7 @@ export default function Parla() {
           )}
 
           {error && (
-            <div className="text-center font-terminal text-blood">⚠ {error}</div>
+            <div className="text-center font-terminal text-blood font-bold">⚠ {error}</div>
           )}
         </div>
       </div>
@@ -176,7 +200,7 @@ export default function Parla() {
       {/* Input ancorat a baix */}
       <form
         onSubmit={handleSubmit}
-        className="shrink-0 border-t border-phantom/20 p-3 bg-ink/95 backdrop-blur-sm"
+        className="shrink-0 border-t-[3px] border-midnight p-3 bg-moonbeam/95 backdrop-blur-sm"
         style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
         <div className="max-w-2xl mx-auto flex gap-2">
@@ -188,12 +212,12 @@ export default function Parla() {
             maxLength={500}
             disabled={pensant}
             placeholder="diu-li alguna cosa a la rata..."
-            className="flex-1 bg-ink/60 border border-phantom/30 px-4 py-3 font-terminal text-lg text-bone focus:outline-none focus:border-phantom focus:shadow-[0_0_10px_rgba(110,255,158,0.4)] transition-all disabled:opacity-50"
+            className="hb-input flex-1 px-4 py-3 text-lg disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={pensant || !input.trim()}
-            className="px-4 py-3 bg-phantom text-ink font-pixel tracking-wider text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-haunt transition-colors"
+            className="hb-button px-4 py-3 text-sm disabled:opacity-40 disabled:cursor-not-allowed"
           >
             ENVIA
           </button>
