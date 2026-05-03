@@ -44,33 +44,44 @@ const MascotV4 = forwardRef<HTMLDivElement, MascotV4Props>(function MascotV4(
         preserveAspectRatio="xMidYMid meet"
       >
         <defs>
+          {/* Fantasma clàssic — cos blanc lluminescent amb glow blau elèctric */}
           <radialGradient id="bodyGrad" cx="50%" cy="25%" r="75%">
-            <stop offset="0%" stopColor="#d4ffe5" stopOpacity="0.98" />
-            <stop offset="30%" stopColor="#6fffb0" stopOpacity="0.9" />
-            <stop offset="60%" stopColor="#1fd678" stopOpacity="0.8" />
-            <stop offset="90%" stopColor="#0aaa58" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="#046a38" stopOpacity="0.2" />
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.99" />
+            <stop offset="30%" stopColor="#f0f8ff" stopOpacity="0.95" />
+            <stop offset="60%" stopColor="#cfe9ff" stopOpacity="0.85" />
+            <stop offset="90%" stopColor="#5fc8ff" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="#1a6fb0" stopOpacity="0.25" />
           </radialGradient>
           <radialGradient id="bodyHighlight" cx="30%" cy="20%" r="30%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.7" />
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.85" />
+            <stop offset="60%" stopColor="#e6f5ff" stopOpacity="0.4" />
             <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
           </radialGradient>
+          {/* Orelles: rata, però rosa pàl·lid (no fluo) */}
           <linearGradient id="earGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#ffc4dd" />
-            <stop offset="100%" stopColor="#ff6fa8" />
+            <stop offset="0%" stopColor="#ffe6ef" />
+            <stop offset="100%" stopColor="#ffb3cd" />
           </linearGradient>
           <linearGradient id="earInner" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#ffa8c8" />
-            <stop offset="100%" stopColor="#d84784" />
+            <stop offset="0%" stopColor="#ffd0e0" />
+            <stop offset="100%" stopColor="#ff8fb6" />
           </linearGradient>
+          {/* Potes: blanc lluminescent amb traça blava */}
           <radialGradient id="pawGrad" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stopColor="#d4ffe5" stopOpacity="0.98" />
-            <stop offset="100%" stopColor="#3de08a" stopOpacity="0.85" />
+            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.99" />
+            <stop offset="100%" stopColor="#a3dcff" stopOpacity="0.85" />
           </radialGradient>
+          {/* Cua: rosa molt pàl·lida (manté toc rata) */}
           <linearGradient id="tailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ff9ec2" />
-            <stop offset="100%" stopColor="#ff5a9c" />
+            <stop offset="0%" stopColor="#ffd0e0" />
+            <stop offset="100%" stopColor="#ff9bbf" />
           </linearGradient>
+          {/* Iris dels ulls: blau gel */}
+          <radialGradient id="irisGrad" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stopColor="#bfeaff" />
+            <stop offset="60%" stopColor="#5fc8ff" />
+            <stop offset="100%" stopColor="#1d6ea8" />
+          </radialGradient>
           <filter id="bodyGlow" x="-30%" y="-30%" width="160%" height="160%">
             <feGaussianBlur stdDeviation="4" result="blur" />
             <feMerge>
@@ -137,24 +148,24 @@ const MascotV4 = forwardRef<HTMLDivElement, MascotV4Props>(function MascotV4(
             d="M 95 120 C 110 85, 150 65, 190 70 C 225 78, 250 110, 235 155 C 220 195, 175 210, 140 195 C 105 180, 85 155, 95 120 Z"
             fill="url(#bodyHighlight)"
           />
-          <path d="M 60 360 Q 38 382 48 412 Q 34 440 44 468" fill="none" stroke="#4dff9f" strokeWidth="3" strokeLinecap="round" opacity="0.4" filter="url(#softBlur)" />
-          <path d="M 360 380 Q 380 402 368 432 Q 380 458 372 488" fill="none" stroke="#4dff9f" strokeWidth="3" strokeLinecap="round" opacity="0.4" filter="url(#softBlur)" />
-          <path d="M 90 60 Q 80 40 95 25" fill="none" stroke="#4dff9f" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" filter="url(#softBlur)" />
-          <path d="M 325 70 Q 340 48 330 30" fill="none" stroke="#4dff9f" strokeWidth="2.5" strokeLinecap="round" opacity="0.35" filter="url(#softBlur)" />
+          <path d="M 60 360 Q 38 382 48 412 Q 34 440 44 468" fill="none" stroke="#5fc8ff" strokeWidth="3" strokeLinecap="round" opacity="0.55" filter="url(#softBlur)" />
+          <path d="M 360 380 Q 380 402 368 432 Q 380 458 372 488" fill="none" stroke="#5fc8ff" strokeWidth="3" strokeLinecap="round" opacity="0.55" filter="url(#softBlur)" />
+          <path d="M 90 60 Q 80 40 95 25" fill="none" stroke="#00e5ff" strokeWidth="2.5" strokeLinecap="round" opacity="0.45" filter="url(#softBlur)" />
+          <path d="M 325 70 Q 340 48 330 30" fill="none" stroke="#00e5ff" strokeWidth="2.5" strokeLinecap="round" opacity="0.45" filter="url(#softBlur)" />
         </g>
 
         {/* PAWS */}
         <g className="rat-paw-l">
           <ellipse cx="55" cy="240" rx="22" ry="17" fill="url(#pawGrad)" />
-          <circle cx="42" cy="238" r="3.5" fill="#0aaa58" opacity="0.6" />
-          <circle cx="46" cy="248" r="3" fill="#0aaa58" opacity="0.6" />
-          <circle cx="54" cy="253" r="3" fill="#0aaa58" opacity="0.6" />
+          <circle cx="42" cy="238" r="3.5" fill="#1d6ea8" opacity="0.55" />
+          <circle cx="46" cy="248" r="3" fill="#1d6ea8" opacity="0.55" />
+          <circle cx="54" cy="253" r="3" fill="#1d6ea8" opacity="0.55" />
         </g>
         <g className="rat-paw-r">
           <ellipse cx="365" cy="240" rx="22" ry="17" fill="url(#pawGrad)" />
-          <circle cx="378" cy="238" r="3.5" fill="#0aaa58" opacity="0.6" />
-          <circle cx="374" cy="248" r="3" fill="#0aaa58" opacity="0.6" />
-          <circle cx="366" cy="253" r="3" fill="#0aaa58" opacity="0.6" />
+          <circle cx="378" cy="238" r="3.5" fill="#1d6ea8" opacity="0.55" />
+          <circle cx="374" cy="248" r="3" fill="#1d6ea8" opacity="0.55" />
+          <circle cx="366" cy="253" r="3" fill="#1d6ea8" opacity="0.55" />
         </g>
 
         {/* FACE */}
@@ -163,21 +174,24 @@ const MascotV4 = forwardRef<HTMLDivElement, MascotV4Props>(function MascotV4(
             <ellipse cx="158" cy="155" rx="28" ry="34" fill="#fff" />
             <ellipse cx="242" cy="155" rx="28" ry="34" fill="#fff" />
             <g transform={`translate(${pupilOffset.x} ${pupilOffset.y})`}>
-              <ellipse className="eye-pupil eye-pupil-l" cx="161" cy="163" rx="13" ry="17" fill="#0d0420" />
-              <ellipse className="eye-pupil eye-pupil-r" cx="239" cy="163" rx="13" ry="17" fill="#0d0420" />
+              {/* Iris blau gel — el "pupil" gros encara és fosc per donar profunditat */}
+              <ellipse className="eye-pupil eye-pupil-l" cx="161" cy="163" rx="13" ry="17" fill="url(#irisGrad)" />
+              <ellipse className="eye-pupil eye-pupil-r" cx="239" cy="163" rx="13" ry="17" fill="url(#irisGrad)" />
+              <ellipse cx="161" cy="165" rx="6" ry="9" fill="#08243d" opacity="0.85" />
+              <ellipse cx="239" cy="165" rx="6" ry="9" fill="#08243d" opacity="0.85" />
               <circle cx="166" cy="156" r="4.5" fill="#fff" />
               <circle cx="244" cy="156" r="4.5" fill="#fff" />
               <circle cx="158" cy="168" r="2" fill="#fff" opacity="0.7" />
               <circle cx="236" cy="168" r="2" fill="#fff" opacity="0.7" />
             </g>
-            <path className="brow-idle brow-idle-l" d="M 130 120 Q 155 108 180 120" stroke="#0aaa58" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity="0.55" />
-            <path className="brow-idle brow-idle-r" d="M 220 120 Q 245 108 270 120" stroke="#0aaa58" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity="0.55" />
-            <path className="brow-rage brow-rage-l" d="M 120 105 L 190 135" stroke="#046a38" strokeWidth="7" fill="none" strokeLinecap="round" />
-            <path className="brow-rage brow-rage-r" d="M 280 105 L 210 135" stroke="#046a38" strokeWidth="7" fill="none" strokeLinecap="round" />
+            <path className="brow-idle brow-idle-l" d="M 130 120 Q 155 108 180 120" stroke="#5fc8ff" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity="0.7" />
+            <path className="brow-idle brow-idle-r" d="M 220 120 Q 245 108 270 120" stroke="#5fc8ff" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity="0.7" />
+            <path className="brow-rage brow-rage-l" d="M 120 105 L 190 135" stroke="#1d6ea8" strokeWidth="7" fill="none" strokeLinecap="round" />
+            <path className="brow-rage brow-rage-r" d="M 280 105 L 210 135" stroke="#1d6ea8" strokeWidth="7" fill="none" strokeLinecap="round" />
           </g>
 
-          <path d="M 190 208 Q 200 200 210 208 Q 200 219 190 208 Z" fill="#ff6fa8" stroke="#d84784" strokeWidth="1.4" />
-          <circle cx="200" cy="206" r="2" fill="#fff" opacity="0.6" />
+          <path d="M 190 208 Q 200 200 210 208 Q 200 219 190 208 Z" fill="#ffb3cd" stroke="#ff8fb6" strokeWidth="1.4" />
+          <circle cx="200" cy="206" r="2" fill="#fff" opacity="0.7" />
 
           <g stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" opacity="0.75" fill="none" className="rat-whiskers">
             <path d="M 172 222 Q 142 220 125 210" />
@@ -263,7 +277,7 @@ function MascotParticles() {
       angle: (i / 18) * Math.PI * 2 + Math.random() * 0.5,
       radius: 180 + Math.random() * 100,
       size: 5 + Math.random() * 8,
-      color: ['#4dff9f', '#a47bff', '#ff9f6b', '#ffffff', '#ff6fa8'][i % 5],
+      color: ['#5fc8ff', '#00e5ff', '#a47bff', '#ffffff', '#ffd0e4'][i % 5],
       duration: 5 + Math.random() * 5,
       delay: Math.random() * 5,
       cy: 25 + Math.random() * 25,

@@ -8,12 +8,17 @@ export default {
         // Paleta Rataplasma - ràdio pirata fantasma anys 80
         ink: '#0a0a0f',       // negre profund del fons
         bone: '#f4f1e8',      // blanc trencat del text
-        phantom: '#6eff9e',   // verd fosforit principal
+        phantom: '#6eff9e',   // verd fosforit (mantingut per accents legacy)
         haunt: '#2dd866',     // verd més saturat per accents
         voltage: '#c77dff',   // morat elèctric secundari
         pumpkin: '#ff9b3f',   // taronja calabassa per destacar
         blood: '#ff4466',     // vermell accent errors/alertes
         mist: '#1a1a24',      // gris fosc per panells
+        // Paleta fantasma clàssic (mascot v5)
+        'ghost-white': '#f0f8ff',  // cos lluminescent
+        'ghost-blue': '#5fc8ff',   // glow blau elèctric
+        'ghost-cyan': '#00e5ff',   // highlight cian
+        'ear-pink': '#ffd0e4',     // orelles, rosa pàl·lid
       },
       fontFamily: {
         pixel: ['"Silkscreen"', 'monospace'],

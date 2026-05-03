@@ -30,9 +30,9 @@ body {
   z-index: -1;
   background:
     radial-gradient(1200px 900px at 20% 10%, rgba(138, 71, 255, 0.35), transparent 60%),
-    radial-gradient(1000px 800px at 85% 90%, rgba(38, 220, 150, 0.25), transparent 60%),
-    radial-gradient(900px 700px at 50% 50%, rgba(255, 108, 67, 0.12), transparent 70%),
-    linear-gradient(180deg, #0a0519 0%, #140a2e 40%, #0d0724 100%);
+    radial-gradient(1000px 800px at 85% 90%, rgba(0, 180, 255, 0.28), transparent 60%),
+    radial-gradient(900px 700px at 50% 40%, rgba(0, 229, 255, 0.12), transparent 70%),
+    linear-gradient(180deg, #060a1f 0%, #0e1438 40%, #08071c 100%);
   overflow: hidden;
 }
 .bg::before {
@@ -278,25 +278,44 @@ body {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 90%;
-  height: 60%;
+  width: 95%;
+  height: 65%;
   transform: translateX(-50%);
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(56, 255, 170, 0.5) 0%, rgba(56, 255, 170, 0.2) 35%, transparent 70%);
-  filter: blur(40px);
-  animation: glowPulse 3s ease-in-out infinite;
+  /* Doble halo: capa exterior cian fluix, nucli blau gel intens */
+  background:
+    radial-gradient(ellipse at center, rgba(0, 229, 255, 0.55) 0%, rgba(95, 200, 255, 0.32) 28%, rgba(95, 200, 255, 0.12) 55%, transparent 72%),
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.35) 0%, transparent 40%);
+  filter: blur(38px);
+  animation: glowPulse 3.4s ease-in-out infinite;
   z-index: -1;
 }
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.12); }
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); filter: blur(38px); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.14); filter: blur(46px); }
 }
 
 .mascot-svg {
   width: 100%;
   height: auto;
   overflow: visible;
-  filter: drop-shadow(0 20px 50px rgba(0, 255, 140, 0.35));
+  /* Drop-shadow blau elèctric — l'aura "vibri" gràcies al glowPulse de sota */
+  filter:
+    drop-shadow(0 0 24px rgba(0, 229, 255, 0.55))
+    drop-shadow(0 18px 48px rgba(95, 200, 255, 0.4));
+  animation: ghostShimmer 4.5s ease-in-out infinite;
+}
+@keyframes ghostShimmer {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 24px rgba(0, 229, 255, 0.55))
+      drop-shadow(0 18px 48px rgba(95, 200, 255, 0.4));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 32px rgba(0, 229, 255, 0.75))
+      drop-shadow(0 18px 60px rgba(95, 200, 255, 0.55));
+  }
 }
 /* SVG-in-React animated pieces */
 .rat-body { transform-origin: center center; animation: bodyUndulate 6s ease-in-out infinite; }
@@ -379,7 +398,7 @@ body {
 .mascot-mist { position: absolute; inset: 0; pointer-events: none; }
 .mist-wisp {
   position: absolute;
-  background: radial-gradient(circle, rgba(77,255,159,0.5) 0%, rgba(77,255,159,0.15) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(0,229,255,0.55) 0%, rgba(95,200,255,0.18) 40%, transparent 70%);
   border-radius: 50%;
   filter: blur(8px);
   will-change: transform, opacity;
@@ -397,11 +416,11 @@ body {
   border-radius: 50%;
   pointer-events: none;
   z-index: 50;
-  border: 4px solid rgba(77, 255, 159, 0.8);
+  border: 4px solid rgba(0, 229, 255, 0.85);
   animation: shockwavePulse 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-.shockwave.sw2 { border-color: rgba(164, 123, 255, 0.7); animation-delay: 0.12s; }
-.shockwave.sw3 { border-color: rgba(255, 159, 107, 0.7); animation-delay: 0.22s; }
+.shockwave.sw2 { border-color: rgba(95, 200, 255, 0.75); animation-delay: 0.12s; }
+.shockwave.sw3 { border-color: rgba(164, 123, 255, 0.65); animation-delay: 0.22s; }
 @keyframes shockwavePulse {
   0% { transform: scale(0.3); opacity: 1; border-width: 6px; }
   100% { transform: scale(14); opacity: 0; border-width: 1px; }
