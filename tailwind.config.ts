@@ -5,15 +5,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Paleta Rataplasma - ràdio pirata fantasma anys 80
-        ink: '#0a0a0f',       // negre profund del fons
-        bone: '#f4f1e8',      // blanc trencat del text
-        phantom: '#6eff9e',   // verd fosforit (mantingut per accents legacy)
-        haunt: '#2dd866',     // verd més saturat per accents
-        voltage: '#c77dff',   // morat elèctric secundari
-        pumpkin: '#ff9b3f',   // taronja calabassa per destacar
-        blood: '#ff4466',     // vermell accent errors/alertes
-        mist: '#1a1a24',      // gris fosc per panells
+        // Paleta Hanna-Barbera / Scooby-Doo 70s
+        ink: '#1a1f3a',       // midnight: contorn i text principal
+        bone: '#f0eada',      // moonbeam: paper antic
+        phantom: '#8aa83b',   // avocado: accent legacy reajustat
+        haunt: '#6f8f2f',     // avocado fosc
+        voltage: '#b94e2c',   // harvest: accent càlid
+        pumpkin: '#e8772e',   // pumpkin
+        blood: '#b9362c',     // error/alerta
+        mist: '#d6e9d3',      // mint cream: panells
+        mustard: '#f4c542',
+        avocado: '#8aa83b',
+        harvest: '#b94e2c',
+        midnight: '#1a1f3a',
+        moonbeam: '#f0eada',
         // Paleta fantasma clàssic (mascot v5)
         'ghost-white': '#f0f8ff',  // cos lluminescent
         'ghost-blue': '#5fc8ff',   // glow blau elèctric
@@ -21,9 +26,10 @@ export default {
         'ear-pink': '#ffd0e4',     // orelles, rosa pàl·lid
       },
       fontFamily: {
-        pixel: ['"Silkscreen"', 'monospace'],
-        terminal: ['"VT323"', 'monospace'],
-        body: ['"Atkinson Hyperlegible"', 'system-ui', 'sans-serif'],
+        pixel: ['"Bagel Fat One"', '"Fredoka"', 'system-ui', 'sans-serif'],
+        terminal: ['"Fredoka"', '"Atkinson Hyperlegible"', 'system-ui', 'sans-serif'],
+        body: ['"Atkinson Hyperlegible"', '"Fredoka"', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       animation: {
         'float': 'float 4s ease-in-out infinite',

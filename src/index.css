@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --hb-mustard: #f4c542;
+  --hb-pumpkin: #e8772e;
+  --hb-avocado: #8aa83b;
+  --hb-mint: #d6e9d3;
+  --hb-harvest: #b94e2c;
+  --hb-midnight: #1a1f3a;
+  --hb-moonbeam: #f0eada;
+  --hb-ghost: #bce0ff;
+  --hb-ink-shadow: 5px 5px 0 var(--hb-midnight);
+}
+
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
@@ -12,8 +24,9 @@
   body {
     @apply bg-ink text-bone font-body min-h-screen overflow-x-hidden;
     background-image:
-      radial-gradient(ellipse at center, rgba(110, 255, 158, 0.08) 0%, transparent 60%),
-      linear-gradient(to bottom, #0a0a0f 0%, #050508 100%);
+      radial-gradient(900px 700px at 20% 0%, rgba(244, 197, 66, 0.28), transparent 60%),
+      radial-gradient(800px 600px at 100% 80%, rgba(138, 168, 59, 0.22), transparent 60%),
+      linear-gradient(to bottom, #f0eada 0%, #d6e9d3 100%);
     background-attachment: fixed;
   }
 
@@ -37,16 +50,14 @@
     content: '';
     position: fixed;
     inset: 0;
-    background-image: repeating-linear-gradient(
-      0deg,
-      rgba(110, 255, 158, 0.04) 0px,
-      rgba(110, 255, 158, 0.04) 1px,
-      transparent 1px,
-      transparent 3px
-    );
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(26, 31, 58, 0.08) 0 1px, transparent 1px),
+      radial-gradient(circle at 80% 30%, rgba(185, 78, 44, 0.07) 0 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.18), transparent 35%, rgba(26,31,58,0.03));
+    background-size: 18px 18px, 23px 23px, 100% 100%;
     pointer-events: none;
     z-index: 1;
-    mix-blend-mode: overlay;
+    mix-blend-mode: multiply;
   }
 
   body::after {
@@ -56,8 +67,8 @@
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)' opacity='0.12'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 2;
-    mix-blend-mode: overlay;
-    opacity: 0.5;
+    mix-blend-mode: multiply;
+    opacity: 0.16;
   }
 
   #root {
@@ -79,10 +90,12 @@
 
 @layer components {
   .btn-rataplasma {
-    @apply relative inline-flex items-center justify-center px-10 py-6 text-2xl md:text-4xl font-pixel tracking-wider text-ink bg-phantom rounded-none cursor-pointer select-none;
+    @apply relative inline-flex items-center justify-center px-10 py-6 text-2xl md:text-4xl font-pixel tracking-wider text-ink bg-mustard cursor-pointer select-none;
+    border: 3px solid var(--hb-midnight);
+    border-radius: 26px 32px 22px 36px;
     box-shadow:
-      4px 4px 0 #2dd866,
-      8px 8px 0 rgba(0, 0, 0, 0.8);
+      5px 5px 0 var(--hb-midnight),
+      9px 9px 0 rgba(26, 31, 58, 0.22);
     transition: transform 80ms ease-out, box-shadow 80ms ease-out;
   }
   .btn-rataplasma:active {
@@ -96,15 +109,16 @@
   }
 
   .panel {
-    @apply relative bg-mist/80 backdrop-blur-sm border border-phantom/30 rounded-sm p-6;
+    @apply relative bg-moonbeam p-6;
+    border: 3px solid var(--hb-midnight);
+    border-radius: 18px 22px 16px 24px;
     box-shadow:
-      0 0 0 1px rgba(110, 255, 158, 0.1),
-      0 0 40px rgba(110, 255, 158, 0.1),
-      inset 0 0 80px rgba(0, 0, 0, 0.4);
+      var(--hb-ink-shadow),
+      inset 0 0 0 2px rgba(255,255,255,0.28);
   }
 
   .terminal-label {
-    @apply font-terminal text-phantom/80 text-sm uppercase tracking-[0.2em];
+    @apply font-terminal text-midnight/70 text-sm uppercase tracking-[0.08em] font-bold;
   }
 
   .glitch-text {
@@ -127,6 +141,101 @@
     color: #ff4466;
     transform: translate(2px, 0);
     mix-blend-mode: screen;
+  }
+}
+
+@layer components {
+  .hb-page {
+    @apply min-h-screen text-midnight;
+    background:
+      radial-gradient(60% 38% at 15% 8%, rgba(244, 197, 66, 0.42), transparent 62%),
+      radial-gradient(48% 35% at 88% 12%, rgba(232, 119, 46, 0.22), transparent 65%),
+      linear-gradient(180deg, var(--hb-moonbeam), var(--hb-mint));
+  }
+
+  .hb-paper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hb-paper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 18% 22%, rgba(26, 31, 58, 0.09) 0 1px, transparent 1px),
+      radial-gradient(circle at 77% 58%, rgba(185, 78, 44, 0.08) 0 1px, transparent 1px);
+    background-size: 17px 17px, 29px 29px;
+    opacity: 0.48;
+    mix-blend-mode: multiply;
+  }
+
+  .hb-header {
+    @apply sticky top-0 z-20 px-4 py-3;
+    background: rgba(240, 234, 218, 0.88);
+    border-bottom: 3px solid var(--hb-midnight);
+    backdrop-filter: blur(10px);
+  }
+
+  .hb-title {
+    @apply font-pixel text-midnight tracking-normal;
+    text-shadow: 2px 2px 0 var(--hb-mustard);
+  }
+
+  .hb-back {
+    @apply font-terminal text-midnight font-bold text-lg transition-transform;
+    text-decoration: none;
+  }
+
+  .hb-back:hover {
+    transform: rotate(-2deg) translateX(-2px);
+  }
+
+  .hb-card {
+    @apply bg-moonbeam text-midnight;
+    border: 3px solid var(--hb-midnight);
+    border-radius: 18px 22px 16px 24px;
+    box-shadow: var(--hb-ink-shadow);
+  }
+
+  .hb-button {
+    @apply font-pixel text-midnight font-bold;
+    background: var(--hb-mustard);
+    border: 3px solid var(--hb-midnight);
+    border-radius: 20px 24px 18px 26px;
+    box-shadow: 4px 4px 0 var(--hb-midnight);
+    transition: transform 90ms ease, box-shadow 90ms ease;
+  }
+
+  .hb-button:active {
+    transform: translate(3px, 3px) scale(0.98);
+    box-shadow: 1px 1px 0 var(--hb-midnight);
+  }
+
+  .hb-input {
+    @apply bg-moonbeam text-midnight font-body;
+    border: 3px solid var(--hb-midnight);
+    border-radius: 14px 18px 13px 20px;
+    box-shadow: 3px 3px 0 rgba(26, 31, 58, 0.25);
+  }
+
+  .hb-input:focus {
+    outline: 3px solid var(--hb-mustard);
+    outline-offset: 2px;
+  }
+
+  .hb-splash {
+    position: absolute;
+    border: 3px solid var(--hb-midnight);
+    border-radius: 48% 52% 45% 55% / 58% 40% 60% 42%;
+    box-shadow: 4px 4px 0 rgba(26, 31, 58, 0.25);
+    transform: rotate(-4deg);
+  }
+
+  .hb-comic-word {
+    @apply font-pixel text-midnight;
+    text-shadow: 2px 2px 0 var(--hb-mustard);
   }
 }
 
