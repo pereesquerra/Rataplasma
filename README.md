@@ -1,99 +1,57 @@
-# 🐀👻 Rataplasma
+# Rataplasma
 
-**Web per al Pau i els seus amics.** Xat amb la Rata Fantasma (IA), generador
-d'imatges, jocs competitius i un apartat educatiu de codi. Per a nens de
-10-13 anys.
+Web privada per al Pau, feta com una habitacio creativa: una rata fantasma original, musica, codi que es pot tocar i un mural d'invents per tornar-hi l'endema.
 
-🔗 [rataplasma.com](https://rataplasma.com) (quan estigui desplegat)
-
-## Què és això
-
-Un projecte divertit i educatiu construït plegats entre el Pere (oncle) i el
-Pau (nebot). Tres pilars:
-
-1. **Joc visual i IA** — la Rata Fantasma, mascot original, anima la pàgina.
-   Xat amb Claude Haiku, generador d'imatges, jocs competitius.
-2. **Competició entre amics** — Duel de Prompts, Enigma de la Rata,
-   Memòria Rataplasma. Punts robables, rànquings.
-3. **Aprenentatge de codi** — mode "mira el codi" a cada element:
-   el nen veu, amb fletxes i explicacions, què fa cada tros de codi. Pot
-   tocar valors i veure el resultat en directe.
-
-**Disseny:** ràdio pirata fantasma anys 80 — negre profund, verd fosforit,
-tipografia arcade/CRT, scan lines, glow, glitches subtils.
-
-## Stack
-
-- **Frontend:** React 18 + Vite + Tailwind + Motion (Framer Motion)
-- **Backend:** Cloudflare Pages Functions
-- **IA xat:** Claude Haiku 4.5 (Anthropic API)
-- **IA imatges:** Workers AI (Flux) — fase 3
-- **BD:** Cloudflare D1 — fase 2 en endavant
-- **Deploy:** Cloudflare Pages (auto-deploy des de `main`)
-- **Domini:** rataplasma.com (Cloudflare Registrar)
-
-## Fase actual: 1 (MVP)
-
-✅ Home amb mascot SVG original i animat
-✅ Botó RATAPLASMA! amb crit sintetitzat (Web Audio API, sense arxius externs)
-✅ Xat amb la Rata Fantasma (Claude Haiku amb personalitat i guardrails)
-✅ Sistema login amb codi d'invitació
-✅ Panell admin del Pau per gestionar peticions
-
-🔜 Fase 2: Codi educatiu (CodiViewer amb fletxes i editors visuals)
-🔜 Fase 3: Generador d'imatges amb Flux
-🔜 Fase 4: Duel de Prompts + punts
-🔜 Fase 5: Enigma de la Rata + Memòria
-🔜 Fase 6: Codi educatiu nivells 2 i 3 (Blockly + JS editor)
-🔜 Fase 7: IA que crea jocs temàtics
-
-Veure [PLAN.md](./PLAN.md) per al pla complet.
-
-## Desenvolupament local
+## Com correr-ho
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
-Per provar les Pages Functions en local cal un fitxer `.dev.vars`:
+La web queda a `http://127.0.0.1:5173/`.
 
-```
-ANTHROPIC_API_KEY=sk-ant-...
-```
-
-Després:
+Per validar el build:
 
 ```bash
-pnpm build
-pnpm pages:dev
+unset NODE_ENV && npm run build
 ```
 
-## Desplegament
+Per provar Cloudflare Pages Functions en local:
 
-Connecta el repo a Cloudflare Pages:
+```bash
+npm run build
+npm run pages:dev
+```
 
-1. A Cloudflare Dashboard → Pages → Create project → Connect to Git.
-2. Selecciona el repo `rataplasma`.
-3. Build command: `pnpm build`
-4. Build output directory: `dist`
-5. A Settings → Environment variables, afegeix (encryptada):
-   - `ANTHROPIC_API_KEY` amb la teva clau d'Anthropic.
-6. A Custom domains, afegeix `rataplasma.com`.
+Cal tenir `ANTHROPIC_API_KEY` configurada a Cloudflare o a `.dev.vars` per al chat.
 
-Auto-deploy a cada `git push main`.
+## Rule Book
 
-## Codis inicials (Fase 1)
+- El codi d'entrada es `ADMINPLASMA`.
+- La sessio es desa a `localStorage` amb la clau `rataplasma.user.v3`.
+- El chat fa `POST /api/chat` amb `{ messages }` i rep stream SSE de Claude Haiku.
+- Rataplasma respon en catala, amb personalitat dramatica i segura per a 11-13 anys.
+- Musica fa servir Web Audio API, sense fitxers externs per al teclat.
+- Les creacions del Laboratori es desen localment a `rataplasma.creacions.v1`.
+- No hi ha convidats encara. Aquesta branca es per al Pau i el Pere.
 
-- **Codi admin del Pau:** `PAU-RATA-2026`
-- **Codi d'invitació amics:** `RATAPLASMA`
+## Rutes
 
-⚠️ Aquests són codis Fase 1 hardcoded al `src/lib/auth.ts`. Canvia'ls abans
-d'ensenyar el projecte a més gent. A la Fase 2 es mouran a D1 amb codis
-únics per persona.
+- `/login`: porta privada.
+- `/`: habitacio principal amb mascota i objectes.
+- `/parla`: chat IA amb TTS i bot de silenci.
+- `/musica`: teclat Do major, instruments, cancons i gravadora.
+- `/codi`: nivells progressius de sliders, blocs i JS editable.
+- `/laboratori`: mural creatiu de reptes i invents.
 
-## Llicència
+## Deploy
 
-Projecte personal. Ús no comercial. El mascot i l'estètica són originals;
-la paraula "Rataplasma" és un crit inventat sense cap relació amb cap
-propietat intel·lectual de tercers.
+Cloudflare Pages:
+
+- Build command: `npm run build`
+- Output directory: `dist`
+- Functions: `functions/api/chat.ts`
+- Headers: `public/_headers`
+
+No es fa merge a `main` des d'aquesta feina. La branca de treball es `fresh-start`.
