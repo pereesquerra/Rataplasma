@@ -3,6 +3,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Parla from './pages/Parla'
 import Musica from './pages/Musica'
+import Codi from './pages/Codi'
 import Admin from './pages/Admin'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -31,6 +32,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <Musica />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/codi"
+        element={
+          <ProtectedRoute>
+            <Codi />
           </ProtectedRoute>
         }
       />

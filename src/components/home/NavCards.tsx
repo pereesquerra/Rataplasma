@@ -39,7 +39,7 @@ const CARDS: CardDef[] = [
     accent: 'linear-gradient(135deg, #ff6fa8 0%, #d83477 100%)',
     shadow: 'rgba(255, 111, 168, 0.5)',
     glow: 'radial-gradient(circle, rgba(255, 111, 168, 0.6), transparent 70%)',
-    locked: true,
+    locked: false,
   },
 ]
 

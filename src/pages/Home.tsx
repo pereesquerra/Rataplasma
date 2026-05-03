@@ -71,6 +71,7 @@ export default function Home() {
   const handleCardSelect = (id: string) => {
     if (id === 'chat') navigate('/parla')
     else if (id === 'music') navigate('/musica')
+    else if (id === 'code') navigate('/codi')
     // la resta locked, no fa res
   }
 
