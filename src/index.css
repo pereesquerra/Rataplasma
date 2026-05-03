@@ -396,6 +396,163 @@ h1 {
   resize: none;
 }
 
+.music-room,
+.code-room,
+.lab-room {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.music-controls,
+.song-picker,
+.rec-actions,
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip-button {
+  min-height: 44px;
+  border: 3px solid #172033;
+  background: #fffdf2;
+  color: #172033;
+  padding: 9px 12px;
+  box-shadow: 3px 3px 0 #172033;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.chip-button.is-active,
+.tool-button.is-danger {
+  background: #ff8f6b;
+}
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.piano-key {
+  min-height: 96px;
+  border: 3px solid #172033;
+  background: #fffdf2;
+  color: #172033;
+  box-shadow: 4px 4px 0 #172033;
+  cursor: pointer;
+}
+
+.piano-key.is-active {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #172033;
+  background: #d8f9f3;
+}
+
+.piano-key strong,
+.piano-key span {
+  display: block;
+}
+
+.piano-key strong {
+  font-size: 1.1rem;
+}
+
+.staff-panel,
+.recorder-panel {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 3px solid #172033;
+  background: rgba(255, 253, 242, 0.88);
+  box-shadow: 5px 5px 0 #172033;
+}
+
+.staff-head,
+.recorder-panel {
+  align-items: center;
+}
+
+.staff-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.staff-head h2,
+.recorder-panel h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 5vw, 2.2rem);
+}
+
+.staff {
+  position: relative;
+  min-height: 210px;
+  border: 3px solid #172033;
+  background: linear-gradient(180deg, #fffdf2, #f7f3df);
+  overflow: hidden;
+}
+
+.staff-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(23, 32, 51, 0.64);
+}
+
+.staff-note {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 48px;
+  min-height: 48px;
+  border: 3px solid #172033;
+  border-radius: 50%;
+  background: #ffd85c;
+  color: #172033;
+  font-size: 0.72rem;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.recorder-panel p {
+  margin: 4px 0 0;
+}
+
+.note-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 42px;
+  align-items: center;
+}
+
+.note-ribbon span,
+.note-ribbon em {
+  border: 2px solid #172033;
+  background: #d8f9f3;
+  padding: 6px 8px;
+  font-weight: 900;
+  font-style: normal;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (min-width: 760px) {
+  .keyboard {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .piano-key {
+    min-height: 150px;
+  }
+}
+
 .mascot-wrap {
   margin: 0;
 }
