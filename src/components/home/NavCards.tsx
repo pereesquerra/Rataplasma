@@ -15,30 +15,30 @@ interface CardDef {
 const CARDS: CardDef[] = [
   {
     id: 'chat', title: 'Parla amb\nla Rata', icon: '💬',
-    accent: 'linear-gradient(135deg, #26dc8a 0%, #0aaa58 100%)',
-    shadow: 'rgba(38, 220, 138, 0.5)',
-    glow: 'radial-gradient(circle, rgba(38, 220, 138, 0.6), transparent 70%)',
+    accent: '#8aa83b',
+    shadow: 'rgba(26, 31, 58, 0.28)',
+    glow: 'radial-gradient(circle, rgba(138, 168, 59, 0.28), transparent 70%)',
     locked: false,
   },
   {
     id: 'image', title: 'Fes una\nimatge', icon: '🎨',
-    accent: 'linear-gradient(135deg, #a47bff 0%, #6a2dd9 100%)',
-    shadow: 'rgba(138, 71, 255, 0.5)',
-    glow: 'radial-gradient(circle, rgba(138, 71, 255, 0.6), transparent 70%)',
+    accent: '#f4c542',
+    shadow: 'rgba(26, 31, 58, 0.28)',
+    glow: 'radial-gradient(circle, rgba(244, 197, 66, 0.28), transparent 70%)',
     locked: true,
   },
   {
     id: 'duel', title: 'Duel de\nprompts', icon: '⚔️',
-    accent: 'linear-gradient(135deg, #ff9f6b 0%, #e85d1b 100%)',
-    shadow: 'rgba(255, 108, 67, 0.5)',
-    glow: 'radial-gradient(circle, rgba(255, 108, 67, 0.6), transparent 70%)',
+    accent: '#e8772e',
+    shadow: 'rgba(26, 31, 58, 0.28)',
+    glow: 'radial-gradient(circle, rgba(232, 119, 46, 0.28), transparent 70%)',
     locked: true,
   },
   {
     id: 'code', title: 'Aprèn a\nprogramar', icon: '🧪',
-    accent: 'linear-gradient(135deg, #ff6fa8 0%, #d83477 100%)',
-    shadow: 'rgba(255, 111, 168, 0.5)',
-    glow: 'radial-gradient(circle, rgba(255, 111, 168, 0.6), transparent 70%)',
+    accent: '#b94e2c',
+    shadow: 'rgba(26, 31, 58, 0.28)',
+    glow: 'radial-gradient(circle, rgba(185, 78, 44, 0.28), transparent 70%)',
     locked: false,
   },
 ]
@@ -46,23 +46,23 @@ const CARDS: CardDef[] = [
 const MINI_CARDS: CardDef[] = [
   {
     id: 'music', title: 'Música', icon: '🎵',
-    accent: 'linear-gradient(135deg, #ffdc5e 0%, #e8a91f 100%)',
-    shadow: 'rgba(255, 220, 94, 0.45)',
-    glow: 'radial-gradient(circle, rgba(255, 220, 94, 0.55), transparent 70%)',
+    accent: '#f4c542',
+    shadow: 'rgba(26, 31, 58, 0.25)',
+    glow: 'radial-gradient(circle, rgba(244, 197, 66, 0.24), transparent 70%)',
     locked: false,
   },
   {
     id: 'bikes', title: 'Bicis', icon: '🚴',
-    accent: 'linear-gradient(135deg, #5fc8ff 0%, #2a88d4 100%)',
-    shadow: 'rgba(95, 200, 255, 0.45)',
-    glow: 'radial-gradient(circle, rgba(95, 200, 255, 0.55), transparent 70%)',
+    accent: '#bce0ff',
+    shadow: 'rgba(26, 31, 58, 0.25)',
+    glow: 'radial-gradient(circle, rgba(188, 224, 255, 0.24), transparent 70%)',
     locked: true,
   },
   {
     id: 'puzzles', title: 'Puzles', icon: '🧩',
-    accent: 'linear-gradient(135deg, #ff4fa8 0%, #c8227e 100%)',
-    shadow: 'rgba(255, 79, 168, 0.45)',
-    glow: 'radial-gradient(circle, rgba(255, 79, 168, 0.55), transparent 70%)',
+    accent: '#8aa83b',
+    shadow: 'rgba(26, 31, 58, 0.25)',
+    glow: 'radial-gradient(circle, rgba(138, 168, 59, 0.24), transparent 70%)',
     locked: true,
   },
 ]
@@ -147,7 +147,7 @@ function NavCard({ card, delay, onSelect }: NavCardProps) {
         </div>
         {!card.locked && (
           <div className="card-sub">
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#4dff9f', boxShadow: '0 0 8px #4dff9f' }} />
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#8aa83b', boxShadow: '0 0 0 2px #1a1f3a' }} />
             llest per jugar
           </div>
         )}
@@ -197,7 +197,7 @@ function MiniCard({ card, delay, onSelect }: MiniCardProps) {
             </>
           ) : (
             <>
-              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#4dff9f', boxShadow: '0 0 6px #4dff9f' }} />
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#8aa83b', boxShadow: '0 0 0 2px #1a1f3a' }} />
               llest
             </>
           )}

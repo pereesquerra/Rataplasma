@@ -6,12 +6,12 @@ interface BackgroundProps {
 
 export default function Background({ showGhosts = true }: BackgroundProps) {
   const bokeh = useMemo(() => ([
-    { x: 8,  y: 15, size: 280, color: '#8a47ff', dur: 22, delay: 0 },
-    { x: 72, y: 22, size: 220, color: '#26dc8a', dur: 28, delay: 3 },
-    { x: 85, y: 75, size: 320, color: '#ff6b3d', dur: 26, delay: 7 },
-    { x: 15, y: 80, size: 260, color: '#ff6fa8', dur: 30, delay: 2 },
-    { x: 50, y: 50, size: 200, color: '#5fc8ff', dur: 24, delay: 5 },
-    { x: 40, y: 10, size: 180, color: '#ffdc5e', dur: 26, delay: 9 },
+    { x: 5,  y: 12, size: 320, color: '#f4c542', dur: 26, delay: 0 },
+    { x: 70, y: 18, size: 240, color: '#8aa83b', dur: 30, delay: 3 },
+    { x: 80, y: 72, size: 340, color: '#e8772e', dur: 28, delay: 7 },
+    { x: 12, y: 76, size: 260, color: '#b94e2c', dur: 32, delay: 2 },
+    { x: 48, y: 48, size: 210, color: '#bce0ff', dur: 27, delay: 5 },
+    { x: 38, y: 8, size: 190, color: '#d6e9d3', dur: 29, delay: 9 },
   ]), [])
 
   const ghosts = useMemo(() => ([
@@ -23,16 +23,16 @@ export default function Background({ showGhosts = true }: BackgroundProps) {
 
   const bokehKeyframes = useMemo(() => bokeh.map((_, i) => (
     `@keyframes bokehDrift-${i} {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 80}px) scale(1.15); }
-      66% { transform: translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 80}px) scale(0.9); }
+      0%, 100% { transform: translate(0, 0) rotate(-5deg) scale(1); }
+      33% { transform: translate(${(Math.random() - 0.5) * 36}px, ${(Math.random() - 0.5) * 30}px) rotate(-2deg) scale(1.04); }
+      66% { transform: translate(${(Math.random() - 0.5) * 36}px, ${(Math.random() - 0.5) * 30}px) rotate(-8deg) scale(0.98); }
     }`
   )).join('\n'), [bokeh])
 
   const ghostKeyframes = useMemo(() => ghosts.map((_, i) => (
     `@keyframes ghostDrift-${i} {
-      0%, 100% { transform: translate(0, 0); opacity: 0.04; }
-      50% { transform: translate(${(Math.random() - 0.5) * 120}px, ${-20 - Math.random() * 40}px); opacity: 0.08; }
+      0%, 100% { transform: translate(0, 0) rotate(-3deg); opacity: 0.08; }
+      50% { transform: translate(${(Math.random() - 0.5) * 90}px, ${-15 - Math.random() * 28}px) rotate(4deg); opacity: 0.14; }
     }`
   )).join('\n'), [ghosts])
 
