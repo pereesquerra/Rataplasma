@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Background from '@/components/home/Background'
-import MascotV4 from '@/components/home/MascotV4'
+import MascotV4 from '@/components/home/MascotSprite'
 import MegaButton from '@/components/home/MegaButton'
 import NavCards from '@/components/home/NavCards'
 import Stickers from '@/components/home/Stickers'
