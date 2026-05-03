@@ -59,13 +59,82 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
   const btnRef = useRef<HTMLButtonElement | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
+  // AudioContext compartit per al boom orquestral pre-crit
+  const audioCtxRef = useRef<AudioContext | null>(null)
+  function getCtx(): AudioContext | null {
+    if (typeof window === 'undefined') return null
+    if (!audioCtxRef.current) {
+      const Ctor = (window as any).AudioContext || (window as any).webkitAudioContext
+      if (!Ctor) return null
+      audioCtxRef.current = new Ctor()
+    }
+    if (audioCtxRef.current?.state === 'suspended') audioCtxRef.current.resume()
+    return audioCtxRef.current
+  }
+
+  // Boom orquestral curt: timpani 50→35 Hz amb decay + cop de noise filtrat (cinemàtic)
+  function playBoom() {
+    const ctx = getCtx()
+    if (!ctx) return
+    const t0 = ctx.currentTime
+    const master = ctx.createGain()
+    master.gain.value = 0.85
+    master.connect(ctx.destination)
+
+    // 1) Timpani: oscil·lador sinus baix, freqüència que cau, envelope curt
+    const osc = ctx.createOscillator()
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(58, t0)
+    osc.frequency.exponentialRampToValueAtTime(34, t0 + 0.45)
+    const oscGain = ctx.createGain()
+    oscGain.gain.setValueAtTime(0.0001, t0)
+    oscGain.gain.exponentialRampToValueAtTime(1.0, t0 + 0.012)
+    oscGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.55)
+    osc.connect(oscGain).connect(master)
+    osc.start(t0)
+    osc.stop(t0 + 0.6)
+
+    // 2) Sub-tone més greu per donar pes
+    const sub = ctx.createOscillator()
+    sub.type = 'sine'
+    sub.frequency.setValueAtTime(34, t0)
+    sub.frequency.exponentialRampToValueAtTime(22, t0 + 0.5)
+    const subGain = ctx.createGain()
+    subGain.gain.setValueAtTime(0.0001, t0)
+    subGain.gain.exponentialRampToValueAtTime(0.6, t0 + 0.02)
+    subGain.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.55)
+    sub.connect(subGain).connect(master)
+    sub.start(t0)
+    sub.stop(t0 + 0.6)
+
+    // 3) White noise filtrat (cop sec inicial — el "thwack" del baqueta)
+    const noiseLen = Math.floor(ctx.sampleRate * 0.18)
+    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate)
+    const data = noiseBuf.getChannelData(0)
+    for (let i = 0; i < noiseLen; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / noiseLen)
+    const noise = ctx.createBufferSource()
+    noise.buffer = noiseBuf
+    const noiseFilter = ctx.createBiquadFilter()
+    noiseFilter.type = 'lowpass'
+    noiseFilter.frequency.value = 320
+    noiseFilter.Q.value = 1
+    const noiseGain = ctx.createGain()
+    noiseGain.gain.setValueAtTime(0.55, t0)
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.18)
+    noise.connect(noiseFilter).connect(noiseGain).connect(master)
+    noise.start(t0)
+  }
+
   // No precarreguem: creem l'Audio al primer clic per evitar problemes d'autoplay i de cache vella
   function tocarCrit() {
     try {
-      // Un Audio nou cada vegada — així sempre agafa l'última versió i evita estats pausats
+      // 1) Boom orquestral immediat (cinemàtic)
+      playBoom()
+      // 2) El crit MP3 entra ~0.18s després — dóna temps al thwack i el sub-tone a expandir-se
       const a = new Audio(getVeuUrl() + '?v=4')
       a.volume = 1.0
-      a.play().catch((err) => console.warn('[MegaButton] play falla:', err))
+      const startCrit = () => a.play().catch((err) => console.warn('[MegaButton] play falla:', err))
+      window.setTimeout(startCrit, 180)
       audioRef.current = a
       window.dispatchEvent(new CustomEvent('rataplasma:scream-start'))
     } catch (err) {
