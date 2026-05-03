@@ -686,6 +686,82 @@ button:disabled {
   animation: floaty var(--ghost-speed) steps(6) infinite;
 }
 
+.lab-maker,
+.mural {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 3px solid #172033;
+  background: rgba(255, 253, 242, 0.9);
+  box-shadow: 5px 5px 0 #172033;
+}
+
+.lab-maker h2,
+.mural h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 5vw, 2.6rem);
+}
+
+.lab-maker p {
+  margin: 8px 0 0;
+  line-height: 1.45;
+}
+
+.lab-maker label {
+  display: grid;
+  gap: 8px;
+  font-weight: 950;
+}
+
+.lab-textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.mural-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+
+.mural-card {
+  min-height: 170px;
+  padding: 16px;
+  border: 3px solid #172033;
+  background: #ffd85c;
+  box-shadow: 5px 5px 0 #172033;
+  transform: rotate(var(--tilt));
+}
+
+.mural-card:nth-child(3n + 2) {
+  background: #d8f9f3;
+}
+
+.mural-card:nth-child(3n) {
+  background: #ffd8bb;
+}
+
+.mural-card span {
+  display: inline-block;
+  padding: 4px 7px;
+  border: 2px solid #172033;
+  background: #fffdf2;
+  font-weight: 950;
+  text-transform: uppercase;
+  font-size: 0.74rem;
+}
+
+.mural-card h3 {
+  margin: 12px 0 8px;
+  font-size: 1.25rem;
+}
+
+.mural-card p,
+.empty-mural {
+  margin: 0;
+  line-height: 1.42;
+}
+
 @keyframes arrows {
   to { stroke-dashoffset: -20; }
 }
