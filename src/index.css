@@ -293,6 +293,109 @@ h1 {
   padding: clamp(16px, 4vw, 32px);
 }
 
+.chat-page {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+  min-height: 100svh;
+  padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(23, 32, 51, 0.04) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(23, 32, 51, 0.04) 1px, transparent 1px),
+    linear-gradient(145deg, #fff6d8, #d8f9f3 58%, #ffd8bb);
+  background-size: 28px 28px, 28px 28px, auto;
+}
+
+.chat-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.chat-top h1 {
+  font-size: clamp(1.45rem, 6vw, 3.4rem);
+}
+
+.eyebrow {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chat-stage {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 10px;
+  align-items: end;
+}
+
+.chat-stage .mascot-wrap {
+  align-self: start;
+  position: sticky;
+  top: 0;
+  width: 82px;
+}
+
+.chat-scroll {
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 4px 4px 12px;
+}
+
+.chat-bubble {
+  width: min(100%, 680px);
+  padding: 14px;
+  border: 3px solid #172033;
+  background: #fffdf2;
+  box-shadow: 4px 4px 0 rgba(23, 32, 51, 0.9);
+}
+
+.chat-bubble--user {
+  align-self: flex-end;
+  background: #d8f9f3;
+}
+
+.chat-bubble--assistant {
+  align-self: flex-start;
+}
+
+.chat-bubble span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.chat-bubble p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.chat-input {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.chat-input textarea {
+  width: 100%;
+  resize: none;
+}
+
 .mascot-wrap {
   margin: 0;
 }
