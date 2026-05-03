@@ -35,9 +35,10 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
+vite.config.js
+vite.config.d.ts
 
 # Claude session files (contenen claus API, no pujar mai)
 CLAUDE_PROJECT_INSTRUCTIONS.txt
 CLAUDE_SESSION_HANDOFF.txt
 CLAUDE_*.txt
-
