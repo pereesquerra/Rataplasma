@@ -6,6 +6,12 @@ interface BotoRataplasmaProps {
   className?: string
 }
 
+type AudioContextConstructor = typeof AudioContext
+
+interface WindowWithWebKitAudio extends Window {
+  webkitAudioContext?: AudioContextConstructor
+}
+
 // Selecciona la veu via URL query param: ?veu=grandpa | eddy | montse
 function getVeuUrl(): string {
   if (typeof window === 'undefined') return '/rataplasma.m4a'
@@ -27,7 +33,8 @@ export default function BotoRataplasma({ onCrit, className = '' }: BotoRataplasm
   useEffect(() => {
     async function load() {
       try {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
+        const AudioCtx = window.AudioContext || (window as WindowWithWebKitAudio).webkitAudioContext
+        if (!AudioCtx) throw new Error('AudioContext no disponible')
         const ctx = new AudioCtx()
         audioCtxRef.current = ctx
 

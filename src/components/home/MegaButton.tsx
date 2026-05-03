@@ -37,6 +37,12 @@ interface Confetti {
   size: number
 }
 
+type AudioContextConstructor = typeof AudioContext
+
+interface WindowWithWebKitAudio extends Window {
+  webkitAudioContext?: AudioContextConstructor
+}
+
 const BUTTON_LABEL = 'RATAPLASMAAAA'
 const LETTER_COLORS = ['#4dff9f', '#a47bff', '#ff9f6b', '#ff6fa8', '#ffdc5e', '#5fc8ff']
 
@@ -64,7 +70,7 @@ export default function MegaButton({ onPress }: MegaButtonProps) {
   function getCtx(): AudioContext | null {
     if (typeof window === 'undefined') return null
     if (!audioCtxRef.current) {
-      const Ctor = (window as any).AudioContext || (window as any).webkitAudioContext
+      const Ctor = window.AudioContext || (window as WindowWithWebKitAudio).webkitAudioContext
       if (!Ctor) return null
       audioCtxRef.current = new Ctor()
     }
