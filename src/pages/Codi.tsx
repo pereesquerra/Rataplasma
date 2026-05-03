@@ -20,18 +20,18 @@ export default function Codi() {
   const [demo, setDemo] = useState<DemoId>('crit')
 
   return (
-    <div className="codi-page min-h-screen pb-24">
-      <header className="sticky top-0 z-10 bg-ink/90 backdrop-blur-md border-b border-ghost-blue/30 px-4 py-3">
+    <div className="codi-page hb-page hb-paper min-h-screen pb-24">
+      <header className="hb-header">
         <div className="max-w-5xl mx-auto flex items-center justify-between gap-3">
           <Link
             to="/"
-            className="font-terminal text-ghost-blue hover:text-ghost-cyan transition-colors text-lg"
+            className="hb-back"
           >
             ← tornar
           </Link>
           <div className="text-center flex-1">
-            <div className="font-pixel text-ghost-cyan text-base sm:text-xl tracking-wider">CODI</div>
-            <div className="font-terminal text-bone/60 text-xs">mira com es fa</div>
+            <div className="hb-title text-base sm:text-xl">CODI</div>
+            <div className="font-terminal text-midnight/60 text-xs">mira com es fa</div>
           </div>
           <div className="w-16" />
         </div>
@@ -41,37 +41,38 @@ export default function Codi() {
         <ProfessorCard level={level} />
 
         <section className="space-y-3">
-          <div className="font-pixel text-ghost-cyan text-sm tracking-wider px-1">NIVELL</div>
+          <div className="terminal-label px-1">nivell</div>
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {LEVELS.map(l => (
               <button
                 key={l.id}
                 onClick={() => setLevel(l.id)}
-                className={`relative p-3 sm:p-4 rounded-2xl border-2 transition-all text-left ${
+                className={`relative p-3 sm:p-4 transition-all text-left rotate-[-1deg] ${
                   level === l.id
-                    ? 'bg-ghost-blue/20 border-ghost-cyan shadow-[0_0_24px_rgba(0,229,255,0.4)]'
-                    : 'bg-mist/40 border-ghost-blue/25 hover:border-ghost-blue'
+                    ? 'bg-mustard border-[3px] border-midnight shadow-[5px_5px_0_var(--hb-midnight)]'
+                    : 'bg-moonbeam border-[3px] border-midnight shadow-[3px_3px_0_var(--hb-midnight)] hover:bg-[#fff3bf]'
                 }`}
+                style={{ borderRadius: '14px 18px 12px 20px' }}
               >
                 <div className="text-2xl mb-1">{l.emoji}</div>
-                <div className="font-pixel text-bone text-xs sm:text-sm tracking-wider">N{l.id} · {l.title}</div>
-                <div className="font-terminal text-bone/60 text-xs">{l.sub}</div>
+                <div className="font-pixel text-midnight text-xs sm:text-sm">N{l.id} · {l.title}</div>
+                <div className="font-terminal text-midnight/60 text-xs">{l.sub}</div>
               </button>
             ))}
           </div>
         </section>
 
         <section className="space-y-3">
-          <div className="font-pixel text-ghost-cyan text-sm tracking-wider px-1">DEMO</div>
+          <div className="terminal-label px-1">demo</div>
           <div className="flex flex-wrap gap-2">
             {DEMOS.map(d => (
               <button
                 key={d.id}
                 onClick={() => setDemo(d.id)}
-                className={`px-4 py-3 rounded-xl font-pixel text-xs border-2 transition-all flex items-center gap-2 ${
+                className={`px-4 py-3 font-pixel text-xs border-[3px] border-midnight rounded-[18px_22px_16px_24px] transition-all flex items-center gap-2 shadow-[3px_3px_0_var(--hb-midnight)] ${
                   demo === d.id
-                    ? 'bg-ghost-cyan text-ink border-ghost-cyan'
-                    : 'bg-mist/40 text-bone border-ghost-blue/30 hover:border-ghost-blue'
+                    ? 'bg-avocado text-midnight'
+                    : 'bg-moonbeam text-midnight hover:bg-mustard'
                 }`}
               >
                 <span className="text-lg">{d.emoji}</span> {d.label}
@@ -100,11 +101,11 @@ function ProfessorCard({ level }: { level: Level }) {
       ? 'Encadena blocs com si fossin LEGO. Cada bloc és un pas que la rata fa.'
       : 'Aquí veus codi de veritat (el mateix que fa servir la web). Pots tocar els números i veure què passa.'
   return (
-    <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-br from-ghost-blue/15 to-voltage/10 border border-ghost-blue/30">
+    <div className="hb-card flex items-center gap-4 p-4 bg-moonbeam/95">
       <MiniGhost size={64} glow={28} />
       <div className="flex-1">
-        <div className="font-pixel text-ghost-cyan text-xs tracking-wider mb-1">PROFESSORA RATA</div>
-        <div className="font-body text-bone/90 text-sm leading-snug">{text}</div>
+        <div className="terminal-label mb-1">professora rata</div>
+        <div className="font-body text-midnight/90 text-sm leading-snug">{text}</div>
       </div>
     </div>
   )
@@ -258,11 +259,11 @@ function DemoCrit({ level }: { level: Level }) {
       <DemoFrame title="📢 Toca un crit · blocs">
         <BlockBuilder
           blocks={[
-            { color: 'bg-ghost-cyan/80', label: 'oscil·lador',  value: 'sawtooth (cru)' },
-            { color: 'bg-ghost-blue/70', label: 'altura',       value: `${freq} Hz` },
-            { color: 'bg-voltage/70',    label: 'distorsió',    value: `nivell ${dist}` },
-            { color: 'bg-pumpkin/70',    label: 'volum',        value: 'puja, baixa' },
-            { color: 'bg-blood/70',      label: 'durada',       value: `${dur.toFixed(1)} s` },
+            { color: 'bg-mustard', label: 'oscil·lador',  value: 'sawtooth (cru)' },
+            { color: 'bg-ghost-blue', label: 'altura',       value: `${freq} Hz` },
+            { color: 'bg-avocado',    label: 'distorsió',    value: `nivell ${dist}` },
+            { color: 'bg-pumpkin',    label: 'volum',        value: 'puja, baixa' },
+            { color: 'bg-harvest text-moonbeam', label: 'durada', value: `${dur.toFixed(1)} s` },
           ]}
         />
         <div className="space-y-4 mt-5">
@@ -281,7 +282,9 @@ function DemoCrit({ level }: { level: Level }) {
     <DemoFrame title="📢 Toca un crit · JavaScript">
       <CodeWithArrows
         active={active}
-        onPickNumber={(id) => setActive(id as any)}
+        onPickNumber={(id) => {
+          if (id === 'freq' || id === 'dist' || id === 'dur') setActive(id)
+        }}
         lines={[
           { id: null, text: 'const ctx = new AudioContext()' },
           { id: null, text: 'const osc = ctx.createOscillator()' },
@@ -344,11 +347,11 @@ function DemoFantasma({ level }: { level: Level }) {
         {visual}
         <BlockBuilder
           blocks={[
-            { color: 'bg-ghost-cyan/80', label: 'crear',     value: 'fantasma' },
-            { color: 'bg-ghost-blue/70', label: 'mida',      value: `${size} px` },
-            { color: 'bg-voltage/70',    label: 'color',     value: `hue ${hue}°` },
-            { color: 'bg-pumpkin/70',    label: 'glow',      value: `${glow} px` },
-            { color: 'bg-blood/70',      label: 'respira',   value: `cada ${speed.toFixed(1)}s` },
+            { color: 'bg-mustard', label: 'crear',     value: 'fantasma' },
+            { color: 'bg-ghost-blue', label: 'mida',      value: `${size} px` },
+            { color: 'bg-avocado',    label: 'color',     value: `hue ${hue}°` },
+            { color: 'bg-pumpkin',    label: 'glow',      value: `${glow} px` },
+            { color: 'bg-harvest text-moonbeam', label: 'respira', value: `cada ${speed.toFixed(1)}s` },
           ]}
         />
         <div className="space-y-4 mt-5">
@@ -367,7 +370,9 @@ function DemoFantasma({ level }: { level: Level }) {
       {visual}
       <CodeWithArrows
         active={active}
-        onPickNumber={(id) => setActive(id as any)}
+        onPickNumber={(id) => {
+          if (id === 'size' || id === 'glow' || id === 'speed' || id === 'hue') setActive(id)
+        }}
         lines={[
           { id: null,    text: 'function Ghost({ size, glow, hue, speed }) {' },
           { id: 'size',  text: `  const w = ${size}             // mida en px` },
@@ -393,8 +398,15 @@ function DemoFantasma({ level }: { level: Level }) {
 
 function DemoFrame({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-ghost-blue/30 bg-mist/30 p-4 sm:p-6">
-      <div className="font-pixel text-ghost-cyan text-sm tracking-wider mb-4">{title}</div>
+    <div
+      className="hb-card p-4 sm:p-6"
+      style={{
+        backgroundImage:
+          'linear-gradient(90deg, rgba(185,78,44,0.28) 0 2px, transparent 2px), repeating-linear-gradient(0deg, rgba(26,31,58,0.13) 0 1px, transparent 1px 28px)',
+        backgroundPosition: '52px 0, 0 18px',
+      }}
+    >
+      <div className="hb-title text-base mb-4">{title}</div>
       {children}
     </div>
   )
@@ -414,15 +426,15 @@ function Slider({
   return (
     <label className="block">
       <div className="flex items-baseline justify-between mb-1">
-        <span className="font-terminal text-bone/80 text-sm">{label}</span>
-        <span className="font-pixel text-ghost-cyan text-xs">{value}{suffix}</span>
+        <span className="font-terminal text-midnight/80 text-sm font-bold">{label}</span>
+        <span className="font-pixel text-harvest text-xs">{value}{suffix}</span>
       </div>
       <input
         type="range"
         min={min} max={max} step={step}
         value={value}
         onChange={e => onChange(parseFloat(e.target.value))}
-        className="w-full accent-ghost-cyan"
+        className="w-full accent-pumpkin"
       />
     </label>
   )
@@ -432,7 +444,7 @@ function PlayBtn({ children, onClick }: { children: React.ReactNode; onClick: ()
   return (
     <button
       onClick={onClick}
-      className="w-full py-3 rounded-xl font-pixel text-sm tracking-wider bg-gradient-to-r from-ghost-cyan to-ghost-blue text-ink border-2 border-ghost-cyan shadow-[0_4px_0_rgba(0,0,0,0.4),0_0_24px_rgba(0,229,255,0.5)] active:translate-y-[2px] active:shadow-[0_2px_0_rgba(0,0,0,0.4)] transition-all"
+      className="hb-button w-full py-3 text-sm"
     >
       {children}
     </button>
@@ -441,7 +453,7 @@ function PlayBtn({ children, onClick }: { children: React.ReactNode; onClick: ()
 
 function Hint({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mt-3 text-xs font-terminal text-bone/60 leading-snug">💡 {children}</div>
+    <div className="mt-3 text-xs font-terminal text-midnight/65 leading-snug font-bold">💡 {children}</div>
   )
 }
 
@@ -451,11 +463,11 @@ function BlockBuilder({ blocks }: { blocks: { color: string; label: string; valu
       {blocks.map((b, i) => (
         <div
           key={i}
-          className={`flex items-center gap-3 px-4 py-3 rounded-xl ${b.color} border border-white/20 shadow-[0_4px_0_rgba(0,0,0,0.3)]`}
+          className={`flex items-center gap-3 px-4 py-3 rounded-[14px_20px_14px_18px] ${b.color} border-[3px] border-midnight shadow-[4px_4px_0_var(--hb-midnight)]`}
         >
-          <div className="font-pixel text-ink text-xs w-6 text-center bg-white/40 rounded">{i + 1}</div>
-          <div className="font-pixel text-ink text-xs sm:text-sm tracking-wider flex-1">{b.label}</div>
-          <div className="font-terminal text-ink/80 text-sm">{b.value}</div>
+          <div className="font-pixel text-midnight text-xs w-6 text-center bg-white/50 rounded border-2 border-midnight">{i + 1}</div>
+          <div className="font-pixel text-current text-xs sm:text-sm flex-1">{b.label}</div>
+          <div className="font-terminal text-current text-sm opacity-80">{b.value}</div>
         </div>
       ))}
     </div>
@@ -518,15 +530,15 @@ function CodeWithArrows({
   return (
     <div ref={wrapRef} className="relative grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10">
       {/* Codi */}
-      <div className="rounded-xl bg-ink/80 border border-ghost-blue/30 p-3 font-mono text-[12px] sm:text-[13px] leading-6 overflow-x-auto">
+      <div className="rounded-[14px_18px_12px_20px] bg-[#fff8dc] border-[3px] border-midnight shadow-[4px_4px_0_var(--hb-midnight)] p-3 font-mono text-[12px] sm:text-[13px] leading-6 overflow-x-auto">
         {lines.map((l, i) => (
           <div
             key={i}
             ref={el => { if (l.id) lineRefs.current[l.id] = el }}
             onClick={() => l.id && onPickNumber(l.id)}
             className={`whitespace-pre ${l.id
-              ? `cursor-pointer rounded px-1 -mx-1 transition-colors ${active === l.id ? 'bg-ghost-cyan/30 text-bone' : 'text-ghost-cyan hover:bg-ghost-blue/15'}`
-              : 'text-bone/70'}`}
+              ? `cursor-pointer rounded px-1 -mx-1 transition-colors ${active === l.id ? 'bg-mustard text-midnight outline outline-2 outline-harvest' : 'text-harvest hover:bg-mustard/30'}`
+              : 'text-midnight/70'}`}
           >
             {syntaxColor(l.text)}
           </div>
@@ -539,9 +551,9 @@ function CodeWithArrows({
           <div
             key={id}
             ref={el => { ctrlRefs.current[id] = el }}
-            className={`rounded-xl border p-3 transition-all ${active === id
-              ? 'border-ghost-cyan bg-ghost-cyan/10 shadow-[0_0_18px_rgba(0,229,255,0.35)]'
-              : 'border-ghost-blue/25 bg-mist/40'}`}
+            className={`rounded-[14px_18px_12px_20px] border-[3px] p-3 transition-all ${active === id
+              ? 'border-midnight bg-mustard shadow-[4px_4px_0_var(--hb-midnight)]'
+              : 'border-midnight bg-moonbeam shadow-[3px_3px_0_rgba(26,31,58,0.45)]'}`}
           >
             {ctrl}
           </div>
@@ -556,7 +568,7 @@ function CodeWithArrows({
       >
         <defs>
           <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-            <path d="M0,0 L10,5 L0,10 z" fill="#00e5ff" />
+            <path d="M0,0 L10,5 L0,10 z" fill="#1a1f3a" />
           </marker>
         </defs>
         {arrows.map(a => {
@@ -568,14 +580,14 @@ function CodeWithArrows({
             <path
               key={a.id}
               d={`M ${a.x1} ${a.y1} C ${cx1} ${a.y1}, ${cx2} ${a.y2}, ${a.x2} ${a.y2}`}
-              stroke={isActive ? '#00e5ff' : 'rgba(95,200,255,0.55)'}
-              strokeWidth={isActive ? 2.5 : 1.5}
+              stroke={isActive ? '#b94e2c' : '#1a1f3a'}
+              strokeWidth={isActive ? 3.5 : 2.4}
               fill="none"
               strokeDasharray="6 8"
               markerEnd="url(#arrowHead)"
               style={{
                 animation: `dash-${isActive ? 'fast' : 'slow'} 1.6s linear infinite`,
-                filter: isActive ? 'drop-shadow(0 0 6px rgba(0,229,255,0.9))' : undefined,
+                filter: isActive ? 'drop-shadow(2px 2px 0 rgba(244,197,66,0.9))' : undefined,
               }}
             />
           )
@@ -608,17 +620,17 @@ function syntaxColor(text: string) {
 
   return parts.map((p, i) => {
     const cls =
-      p.t === 'k' ? 'text-voltage' :
-      p.t === 's' ? 'text-pumpkin' :
-      p.t === 'n' ? 'text-ghost-cyan font-bold' :
-      p.t === 'c' ? 'text-bone/40 italic' : ''
+      p.t === 'k' ? 'text-harvest font-bold' :
+      p.t === 's' ? 'text-pumpkin font-bold' :
+      p.t === 'n' ? 'text-avocado font-bold' :
+      p.t === 'c' ? 'text-midnight/45 italic' : ''
     return <span key={i} className={cls}>{p.v}</span>
   })
 }
 
 function MobileBlocksHint() {
   return (
-    <div className="md:hidden text-xs font-terminal text-bone/60 px-1">
+    <div className="md:hidden text-xs font-terminal text-midnight/60 px-1">
       📱 Al mòbil els blocs es mostren com a llista. Per encaixar-los amb el dit, obre la web a un ordinador.
     </div>
   )
